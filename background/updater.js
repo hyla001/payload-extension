@@ -55,9 +55,8 @@ async function checkForUpdates() {
     }
 }
 
-// Update payloads cache
 async function updatePayloadsCache(baseUrl) {
-    const categories = ['xss', 'sqli', 'ssrf', 'lfi', 'rfi', 'cmdi', 'ssti', 'open_redirect', 'csrf'];
+    const categories = ['xss', 'sqli', 'ssrf', 'lfi', 'rfi', 'cmdi', 'ssti', 'open_redirect', 'csrf', '2fa_bypass', 'waf_bypass'];
     const allPayloads = [];
 
     for (const category of categories) {

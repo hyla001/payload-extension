@@ -18,7 +18,9 @@ const CATEGORIES = [
     'cmdi',
     'ssti',
     'open_redirect',
-    'csrf'
+    'csrf',
+    '2fa_bypass',
+    'waf_bypass'
 ];
 
 /**
