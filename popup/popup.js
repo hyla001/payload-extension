@@ -101,12 +101,20 @@ async function fetchGitHubPayloads(forceRefresh = false) {
             return;
         }
 
-        const categories = ['xss', 'sqli', 'ssrf', 'lfi', 'rfi', 'cmdi', 'ssti', 'open_redirect', 'csrf'];
+        const categories = ['xss', 'sqli', 'ssrf', 'lfi', 'rfi', 'cmdi', 'ssti', 'open_redirect', 'csrf', '2fa_bypass', 'waf_bypass'];
         const fetched = [];
 
         for (const cat of categories) {
             try {
-                const response = await fetch(`${GITHUB_RAW_BASE}/payloads/${cat}.json`);
+                // Try GitHub first
+                let response = await fetch(`${GITHUB_RAW_BASE}/payloads/${cat}.json`);
+
+                // Fallback to local bundled file if GitHub fails
+                if (!response.ok) {
+                    const localUrl = chrome.runtime.getURL(`payloads/${cat}.json`);
+                    response = await fetch(localUrl);
+                }
+
                 if (response.ok) {
                     const data = await response.json();
                     if (data.payloads) {
@@ -118,7 +126,23 @@ async function fetchGitHubPayloads(forceRefresh = false) {
                     }
                 }
             } catch (e) {
-                console.warn(`Failed to fetch ${cat}:`, e);
+                // Try local as final fallback
+                try {
+                    const localUrl = chrome.runtime.getURL(`payloads/${cat}.json`);
+                    const localResponse = await fetch(localUrl);
+                    if (localResponse.ok) {
+                        const data = await localResponse.json();
+                        if (data.payloads) {
+                            fetched.push(...data.payloads.map(p => ({
+                                ...p,
+                                source: 'github',
+                                id: p.id || `gh_${cat}_${Math.random().toString(36).substr(2, 9)}`
+                            })));
+                        }
+                    }
+                } catch (localError) {
+                    console.warn(`Failed to fetch ${cat}:`, localError);
+                }
             }
         }
 
@@ -362,17 +386,9 @@ function renderSubcategories() {
     const container = document.getElementById('subcategoryList');
     if (!container) return;
 
-    const subs = getSubcategories(activeCategory);
-    if (subs.length === 0) {
-        container.style.display = 'none';
-        return;
-    }
-
-    container.style.display = 'flex';
-    container.innerHTML = `
-    <button class="subcategory-btn ${!activeSubcategory ? 'active' : ''}" data-sub="">All</button>
-    ${subs.map(s => `<button class="subcategory-btn ${activeSubcategory === s ? 'active' : ''}" data-sub="${s}">${s}</button>`).join('')}
-  `;
+    // Disabled - hide subcategory tabs
+    container.style.display = 'none';
+    return;
 }
 
 function handleSubcategoryClick(e) {

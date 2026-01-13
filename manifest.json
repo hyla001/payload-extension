@@ -36,5 +36,15 @@
             },
             "description": "Buka PELURU LUHUT"
         }
-    }
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "payloads/*.json"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
 }

