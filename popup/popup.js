@@ -9,13 +9,15 @@ const STORAGE_KEYS = {
     THEME: 'theme',
     LAST_SYNC: 'lastSync',
     USER_NOTES: 'userNotes',
-    POPUP_SIZE: 'popupSize'
+    POPUP_SIZE: 'popupSize',
+    HIDDEN_PAYLOADS: 'hiddenPayloads'
 };
 
 // ===== STATE =====
 let githubPayloads = [];
 let userPayloads = [];
 let favorites = new Set();
+let hiddenPayloads = new Set();
 let allPayloads = [];
 let activeCategory = 'All';
 let activeSubcategory = null;
@@ -28,14 +30,44 @@ let currentEditingNote = null;
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', async function () {
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Load theme and size first (instant)
     await loadTheme();
     await loadPopupSize();
+
+    // Load from cache/storage
     await loadFromStorage();
-    await fetchGitHubPayloads();
-    combinePayloads();
-    renderPayloads();
-    renderSubcategories();
-    setupEventListeners();
+
+    // Check if we have cached data
+    const hasCache = githubPayloads.length > 0;
+
+    if (hasCache) {
+        // Cache exists: show data immediately, hide loading
+        combinePayloads();
+        renderPayloads();
+        renderSubcategories();
+        setupEventListeners();
+        loadingScreen?.classList.add('hidden');
+
+        // Background sync (don't block UI)
+        fetchGitHubPayloads().then(() => {
+            combinePayloads();
+            renderPayloads();
+        });
+    } else {
+        // No cache: show loading, fetch from GitHub
+        await fetchGitHubPayloads();
+        combinePayloads();
+        renderPayloads();
+        renderSubcategories();
+        setupEventListeners();
+
+        // Minimum loading time for UX (300ms)
+        setTimeout(() => {
+            loadingScreen?.classList.add('hidden');
+        }, 300);
+    }
 });
 
 // ===== STORAGE FUNCTIONS =====
@@ -46,11 +78,13 @@ async function loadFromStorage() {
             STORAGE_KEYS.FAVORITES,
             STORAGE_KEYS.GITHUB_PAYLOADS,
             STORAGE_KEYS.THEME,
-            STORAGE_KEYS.USER_NOTES
+            STORAGE_KEYS.USER_NOTES,
+            STORAGE_KEYS.HIDDEN_PAYLOADS
         ]);
 
         userPayloads = result[STORAGE_KEYS.USER_PAYLOADS] || [];
         favorites = new Set(result[STORAGE_KEYS.FAVORITES] || []);
+        hiddenPayloads = new Set(result[STORAGE_KEYS.HIDDEN_PAYLOADS] || []);
         githubPayloads = result[STORAGE_KEYS.GITHUB_PAYLOADS] || [];
         currentTheme = result[STORAGE_KEYS.THEME] || 'dark';
         userNotes = result[STORAGE_KEYS.USER_NOTES] || [];
@@ -88,6 +122,14 @@ async function saveUserNotes() {
         await chrome.storage.local.set({ [STORAGE_KEYS.USER_NOTES]: userNotes });
     } catch (e) {
         console.warn('Save notes failed:', e);
+    }
+}
+
+async function saveHiddenPayloads() {
+    try {
+        await chrome.storage.local.set({ [STORAGE_KEYS.HIDDEN_PAYLOADS]: Array.from(hiddenPayloads) });
+    } catch (e) {
+        console.warn('Save hidden payloads failed:', e);
     }
 }
 
@@ -164,7 +206,10 @@ async function fetchGitHubPayloads(forceRefresh = false) {
 function combinePayloads() {
     // Mark user payloads with source
     const marked = userPayloads.map(p => ({ ...p, source: 'user' }));
-    allPayloads = [...marked, ...githubPayloads];
+
+    // Combine and filter out hidden payloads
+    const combined = [...marked, ...githubPayloads];
+    allPayloads = combined.filter(p => !hiddenPayloads.has(p.id));
 
     // Apply favorites
     allPayloads.forEach(p => {
@@ -544,13 +589,11 @@ function renderPayloads(list) {
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
           </button>
-          ${isUserPayload ? `
-          <button class="delete-btn" data-action="delete" data-id="${p.id}" title="Delete">
+          <button class="delete-btn" data-action="delete" data-id="${p.id}" title="Hide">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
             </svg>
           </button>
-          ` : ''}
         </div>
       </div>
       <div class="payload-code">${escapeHtml(code)}</div>
@@ -604,21 +647,32 @@ function toggleFavorite(id) {
 }
 
 async function deletePayload(id) {
-    const payload = userPayloads.find(p => p.id === id);
-    if (!payload) {
-        showToast('Hanya bisa hapus payload buatan sendiri');
+    // Find payload in either user or github payloads
+    const userPayload = userPayloads.find(p => p.id === id);
+    const allPayload = allPayloads.find(p => p.id === id);
+
+    if (!allPayload) {
+        showToast('Payload tidak ditemukan');
         return;
     }
 
-    const confirmed = await customConfirm(`Hapus "${payload.title}"?`);
+    const confirmed = await customConfirm(`Sembunyikan "${allPayload.title}"?`);
     if (confirmed) {
-        userPayloads = userPayloads.filter(p => p.id !== id);
+        if (userPayload) {
+            // User payload: delete permanently
+            userPayloads = userPayloads.filter(p => p.id !== id);
+            saveUserPayloads();
+        }
+
+        // Add to hidden list (works for both user and github payloads)
+        hiddenPayloads.add(id);
         favorites.delete(id);
-        saveUserPayloads();
+
+        saveHiddenPayloads();
         saveFavorites();
         combinePayloads();
         filterPayloads();
-        showToast('Payload dihapus');
+        showToast('Payload disembunyikan');
     }
 }
 
