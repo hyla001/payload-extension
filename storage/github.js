@@ -6,7 +6,7 @@
 import { STORES, clearStore, addToStore, getAllFromStore, getFromStore, addToStore as setMeta } from './db.js';
 
 // GitHub raw content base URL - Update this with your actual repo
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/YOUR_USERNAME/luhut-binshar/main';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/hyla001/luhut-binshar/main';
 
 // Payload categories to fetch
 const CATEGORIES = [

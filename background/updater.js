@@ -24,7 +24,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 // Check for payload updates from GitHub
 async function checkForUpdates() {
     try {
-        const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/YOUR_USERNAME/luhut-binshar/main';
+        const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/hyla001/luhut-binshar/main';
 
         // Fetch version info
         const response = await fetch(`${GITHUB_RAW_BASE}/version.json`);
