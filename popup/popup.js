@@ -8,7 +8,8 @@ const STORAGE_KEYS = {
     GITHUB_PAYLOADS: 'githubPayloads',
     THEME: 'theme',
     LAST_SYNC: 'lastSync',
-    USER_NOTES: 'userNotes'
+    USER_NOTES: 'userNotes',
+    POPUP_SIZE: 'popupSize'
 };
 
 // ===== STATE =====
@@ -20,6 +21,7 @@ let activeCategory = 'All';
 let activeSubcategory = null;
 let selectedFormCategory = 'XSS';
 let currentTheme = 'dark';
+let popupSize = 'medium'; // 'small', 'medium', 'large'
 let searchMode = 'normal'; // 'normal' or 'regex'
 let userNotes = []; // [{id, title, content, createdAt, updatedAt}]
 let currentEditingNote = null;
@@ -27,6 +29,7 @@ let currentEditingNote = null;
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', async function () {
     await loadTheme();
+    await loadPopupSize();
     await loadFromStorage();
     await fetchGitHubPayloads();
     combinePayloads();
@@ -200,6 +203,51 @@ function toggleTheme() {
     showToast(`Theme: ${currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode'}`);
 }
 
+// ===== POPUP SIZE =====
+async function loadPopupSize() {
+    try {
+        const result = await chrome.storage.local.get(STORAGE_KEYS.POPUP_SIZE);
+        popupSize = result[STORAGE_KEYS.POPUP_SIZE] || 'medium';
+        applyPopupSize();
+    } catch (e) {
+        popupSize = 'medium';
+        applyPopupSize();
+    }
+}
+
+function applyPopupSize() {
+    const html = document.documentElement;
+    const body = document.body;
+
+    // Remove existing size classes
+    html.classList.remove('popup-small', 'popup-medium', 'popup-large');
+    body.classList.remove('popup-small', 'popup-medium', 'popup-large');
+
+    // Apply new size class
+    html.classList.add(`popup-${popupSize}`);
+    body.classList.add(`popup-${popupSize}`);
+
+    // Update size buttons UI
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.size === popupSize);
+    });
+}
+
+function setPopupSize(size) {
+    popupSize = size;
+    applyPopupSize();
+    savePopupSize();
+    showToast(`Ukuran: ${size === 'small' ? 'Kecil' : size === 'medium' ? 'Sedang' : 'Besar'}`);
+}
+
+async function savePopupSize() {
+    try {
+        await chrome.storage.local.set({ [STORAGE_KEYS.POPUP_SIZE]: popupSize });
+    } catch (e) {
+        console.warn('Save popup size failed:', e);
+    }
+}
+
 // ===== EVENT LISTENERS =====
 function setupEventListeners() {
     // Search input with debounce
@@ -239,6 +287,13 @@ function setupEventListeners() {
     document.getElementById('exportBtn').addEventListener('click', exportData);
     document.getElementById('wipeBtn').addEventListener('click', wipeUserData);
     document.getElementById('themeBtn')?.addEventListener('click', toggleTheme);
+
+    // Popup size buttons
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            setPopupSize(this.dataset.size);
+        });
+    });
 
     // Subcategory clicks
     document.getElementById('subcategoryList')?.addEventListener('click', handleSubcategoryClick);

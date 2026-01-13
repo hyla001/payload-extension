@@ -930,6 +930,80 @@ body {
   color: var(--danger);
 }
 
+/* Settings Row (for inline options) */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.settings-row-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+}
+
+.settings-row-left svg {
+  color: var(--accent-dark);
+}
+
+.settings-row-left span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Size Options Buttons */
+.size-options {
+  display: flex;
+  gap: 4px;
+}
+
+.size-btn {
+  width: 32px;
+  height: 28px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.size-btn:hover {
+  border-color: var(--accent-dark);
+  color: var(--text-secondary);
+}
+
+.size-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* ===== Popup Size Classes ===== */
+.popup-small {
+  width: 300px !important;
+  height: 420px !important;
+}
+
+.popup-medium {
+  width: 320px !important;
+  height: 450px !important;
+}
+
+.popup-large {
+  width: 380px !important;
+  height: 520px !important;
+}
+
 /* ===== About Card ===== */
 .about-card {
   background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
