@@ -19,7 +19,8 @@
     },
     "permissions": [
         "storage",
-        "clipboardWrite"
+        "clipboardWrite",
+        "alarms"
     ],
     "host_permissions": [
         "https://raw.githubusercontent.com/*"
