@@ -79,6 +79,45 @@ Atau [**download ZIP dari GitHub**](https://github.com/hyla001/payload-extension
 
 ---
 
+## 🔄 How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     ARCHITECTURE                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   📦 payload-extension          📂 luhut-binshar                │
+│   (Download this!)              (Auto-synced)                   │
+│   ─────────────────             ──────────────                  │
+│   • Browser extension           • Payload database (JSON)       │
+│   • User interface              • XSS, SQLi, SSRF, etc.        │
+│   • Settings & favorites        • Updated regularly            │
+│                                                                  │
+│              ┌──────────────────────────────────┐               │
+│   Extension ──│  Sync via GitHub Raw URL       │── Payloads    │
+│              └──────────────────────────────────┘               │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 💡 Apa yang Perlu Kamu Download?
+
+| Repo | Perlu Download? | Keterangan |
+|------|-----------------|------------|
+| **payload-extension** | ✅ **YA** | Install ini di browser kamu |
+| **luhut-binshar** | ❌ **TIDAK** | Auto-sync dari extension |
+
+### 🔄 Update Flow
+
+1. **Developer** update payload di `luhut-binshar`
+2. **Developer** push ke GitHub
+3. **User** klik **Sync** di extension
+4. **User** dapat payload terbaru! ✨
+
+> 💡 **Note:** Kamu tidak perlu download ulang extension untuk mendapatkan payload baru. Cukup klik Sync!
+
+---
+
 ## 🎯 Fitur Utama
 
 | Fitur | Deskripsi |
@@ -87,8 +126,11 @@ Atau [**download ZIP dari GitHub**](https://github.com/hyla001/payload-extension
 | 📋 **One-Click Copy** | Klik sekali untuk copy payload ke clipboard |
 | ⭐ **Favorites** | Simpan payload yang sering dipakai |
 | ➕ **Custom Payloads** | Tambahkan payload buatan sendiri |
+| 🗑️ **Hide Payloads** | Sembunyikan payload yang tidak dibutuhkan |
 | 🔄 **Auto-Sync** | Update otomatis dari GitHub repository |
-| 🏷️ **Categories** | Payload terorganisir berdasarkan kategori |
+| 🎨 **Theme Toggle** | Dark & Light mode |
+| 📐 **Resize Popup** | Small, Medium, Large size options |
+| ⚡ **Cache-First** | Instant load, background sync |
 
 ---
 
@@ -105,6 +147,8 @@ Atau [**download ZIP dari GitHub**](https://github.com/hyla001/payload-extension
 | 🔧 **SSTI** | 13+ | Server-Side Template Injection |
 | ↪️ **Open Redirect** | 10+ | Open Redirect |
 | 🔐 **CSRF** | 9+ | Cross-Site Request Forgery |
+| 🔓 **2FA Bypass** | 20+ | Two-Factor Authentication Bypass |
+| 🛡️ **WAF Bypass** | 25+ | Web Application Firewall Bypass |
 
 ---
 
