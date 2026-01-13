@@ -330,6 +330,10 @@ function setupEventListeners() {
     // Settings buttons
     document.getElementById('syncBtn').addEventListener('click', syncPayloads);
     document.getElementById('exportBtn').addEventListener('click', exportData);
+    document.getElementById('importBtn').addEventListener('click', () => {
+        document.getElementById('importFileInput').click();
+    });
+    document.getElementById('importFileInput').addEventListener('change', handleImportFile);
     document.getElementById('wipeBtn').addEventListener('click', wipeUserData);
     document.getElementById('themeBtn')?.addEventListener('click', toggleTheme);
 
@@ -731,6 +735,50 @@ function exportData() {
     a.click();
     URL.revokeObjectURL(url);
     showToast('Export berhasil');
+}
+
+async function handleImportFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+
+        // Validate data structure
+        if (!data.userPayloads && !data.favorites) {
+            showToast('Format file tidak valid');
+            return;
+        }
+
+        // Merge user payloads (avoid duplicates by ID)
+        if (data.userPayloads && Array.isArray(data.userPayloads)) {
+            const existingIds = new Set(userPayloads.map(p => p.id));
+            const newPayloads = data.userPayloads.filter(p => !existingIds.has(p.id));
+            userPayloads = [...userPayloads, ...newPayloads];
+            await saveUserPayloads();
+        }
+
+        // Merge favorites
+        if (data.favorites && Array.isArray(data.favorites)) {
+            data.favorites.forEach(id => favorites.add(id));
+            await saveFavorites();
+        }
+
+        // Refresh UI
+        combinePayloads();
+        filterPayloads();
+
+        const imported = (data.userPayloads?.length || 0);
+        showToast(`Import berhasil: ${imported} payload`);
+
+    } catch (e) {
+        console.error('Import failed:', e);
+        showToast('Gagal import: file tidak valid');
+    }
+
+    // Reset file input
+    event.target.value = '';
 }
 
 async function wipeUserData() {
