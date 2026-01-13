@@ -8,18 +8,22 @@ chrome.runtime.onInstalled.addListener(async () => {
     console.log('LUHUT BINSHAR installed');
 
     // Set alarm for periodic updates (every 24 hours)
-    chrome.alarms.create('checkUpdates', { periodInMinutes: 1440 });
+    if (chrome.alarms) {
+        chrome.alarms.create('checkUpdates', { periodInMinutes: 1440 });
+    }
 
     // Initial update check
     await checkForUpdates();
 });
 
-// Handle alarm
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name === 'checkUpdates') {
-        await checkForUpdates();
-    }
-});
+// Handle alarm (with safety check)
+if (chrome.alarms) {
+    chrome.alarms.onAlarm.addListener(async (alarm) => {
+        if (alarm.name === 'checkUpdates') {
+            await checkForUpdates();
+        }
+    });
+}
 
 // Check for payload updates from GitHub
 async function checkForUpdates() {
