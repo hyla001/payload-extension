@@ -148,22 +148,24 @@
 
           <div class="form-group">
             <label>Target Kaliber</label>
-            <div class="category-grid">
-              <button type="button" class="category-option active" data-category="XSS">XSS</button>
-              <button type="button" class="category-option" data-category="SQLi">SQLi</button>
-              <button type="button" class="category-option" data-category="SSRF">SSRF</button>
-              <button type="button" class="category-option" data-category="LFI">LFI</button>
-              <button type="button" class="category-option" data-category="CMDi">CMDi</button>
-              <button type="button" class="category-option" data-category="SSTI">SSTI</button>
-              <button type="button" class="category-option" data-category="RFI">RFI</button>
-              <button type="button" class="category-option" data-category="CSRF">CSRF</button>
-              <button type="button" class="category-option" data-category="Open Redirect">Redirect</button>
-              <button type="button" class="category-option" data-category="2FA Bypass">2FA</button>
-              <button type="button" class="category-option" data-category="WAF Bypass">WAF</button>
-            </div>
-            <div class="custom-category-input">
-              <input type="text" id="customCategory" placeholder="Custom kaliber..." maxlength="20">
-              <button type="button" id="addCustomCategoryBtn" class="add-category-btn">+</button>
+            <div class="kaliber-card">
+              <div class="kaliber-scroll">
+                <button type="button" class="category-option active" data-category="XSS">XSS</button>
+                <button type="button" class="category-option" data-category="SQLi">SQLi</button>
+                <button type="button" class="category-option" data-category="SSRF">SSRF</button>
+                <button type="button" class="category-option" data-category="LFI">LFI</button>
+                <button type="button" class="category-option" data-category="CMDi">CMDi</button>
+                <button type="button" class="category-option" data-category="SSTI">SSTI</button>
+                <button type="button" class="category-option" data-category="RFI">RFI</button>
+                <button type="button" class="category-option" data-category="CSRF">CSRF</button>
+                <button type="button" class="category-option" data-category="Open Redirect">Redirect</button>
+                <button type="button" class="category-option" data-category="2FA Bypass">2FA</button>
+                <button type="button" class="category-option" data-category="WAF Bypass">WAF</button>
+              </div>
+              <div class="custom-category-input">
+                <input type="text" id="customCategory" placeholder="Custom kaliber..." maxlength="20">
+                <button type="button" id="addCustomCategoryBtn" class="add-category-btn">+</button>
+              </div>
             </div>
           </div>
 

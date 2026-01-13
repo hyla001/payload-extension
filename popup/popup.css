@@ -737,6 +737,48 @@ body {
   color: var(--bg-primary);
 }
 
+/* ===== Kaliber Card (Compact Category Selector) ===== */
+.kaliber-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.kaliber-scroll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 80px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-dark) transparent;
+}
+
+.kaliber-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.kaliber-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kaliber-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent-dark);
+  border-radius: 4px;
+}
+
+.kaliber-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+.kaliber-card .custom-category-input {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
 /* Custom Category Input */
 .custom-category-input {
   display: flex;
