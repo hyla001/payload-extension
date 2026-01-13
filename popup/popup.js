@@ -1,5 +1,5 @@
 // ===== PELURU LUHUT v2.0 - UPGRADED =====
-// Features: Persistent Storage, GitHub Fetch, Subcategory, Delete, Theme, Advanced Search
+// Features: Persistent Storage, GitHub Fetch, Subcategory, Delete, Theme, Advanced Search, Standalone Notes
 
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/hyla001/luhut-binshar/main';
 const STORAGE_KEYS = {
@@ -7,7 +7,8 @@ const STORAGE_KEYS = {
     FAVORITES: 'favorites',
     GITHUB_PAYLOADS: 'githubPayloads',
     THEME: 'theme',
-    LAST_SYNC: 'lastSync'
+    LAST_SYNC: 'lastSync',
+    USER_NOTES: 'userNotes'
 };
 
 // ===== STATE =====
@@ -20,6 +21,8 @@ let activeSubcategory = null;
 let selectedFormCategory = 'XSS';
 let currentTheme = 'dark';
 let searchMode = 'normal'; // 'normal' or 'regex'
+let userNotes = []; // [{id, title, content, createdAt, updatedAt}]
+let currentEditingNote = null;
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', async function () {
@@ -39,13 +42,15 @@ async function loadFromStorage() {
             STORAGE_KEYS.USER_PAYLOADS,
             STORAGE_KEYS.FAVORITES,
             STORAGE_KEYS.GITHUB_PAYLOADS,
-            STORAGE_KEYS.THEME
+            STORAGE_KEYS.THEME,
+            STORAGE_KEYS.USER_NOTES
         ]);
 
         userPayloads = result[STORAGE_KEYS.USER_PAYLOADS] || [];
         favorites = new Set(result[STORAGE_KEYS.FAVORITES] || []);
         githubPayloads = result[STORAGE_KEYS.GITHUB_PAYLOADS] || [];
         currentTheme = result[STORAGE_KEYS.THEME] || 'dark';
+        userNotes = result[STORAGE_KEYS.USER_NOTES] || [];
     } catch (e) {
         console.warn('Storage load failed:', e);
     }
@@ -72,6 +77,14 @@ async function saveTheme() {
         await chrome.storage.local.set({ [STORAGE_KEYS.THEME]: currentTheme });
     } catch (e) {
         console.warn('Save theme failed:', e);
+    }
+}
+
+async function saveUserNotes() {
+    try {
+        await chrome.storage.local.set({ [STORAGE_KEYS.USER_NOTES]: userNotes });
+    } catch (e) {
+        console.warn('Save notes failed:', e);
     }
 }
 
@@ -211,6 +224,36 @@ function setupEventListeners() {
     document.getElementById('customCategory')?.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') addCustomCategory();
     });
+
+    // Notes screen
+    document.getElementById('notesBtn')?.addEventListener('click', showNotesScreen);
+    document.getElementById('backFromNotes')?.addEventListener('click', () => showScreen('main'));
+    document.getElementById('addNoteBtn')?.addEventListener('click', () => openNoteEditor(null));
+
+    // Note detail screen
+    document.getElementById('backFromNoteDetail')?.addEventListener('click', backToNotesList);
+    document.getElementById('editNoteFromDetail')?.addEventListener('click', () => {
+        if (currentEditingNote) openNoteEditor(currentEditingNote.id);
+    });
+    document.getElementById('deleteNoteFromDetail')?.addEventListener('click', () => {
+        if (currentEditingNote) {
+            deleteNote(currentEditingNote.id);
+            backToNotesList();
+        }
+    });
+
+    // Note editor modal
+    document.getElementById('closeNoteEditor')?.addEventListener('click', closeNoteEditor);
+    document.getElementById('saveNoteBtn')?.addEventListener('click', saveNote);
+
+    // Close modal on overlay click
+    document.getElementById('noteModal')?.addEventListener('click', function (e) {
+        if (e.target === this) closeNoteEditor();
+    });
+
+    // Custom confirm modal
+    document.getElementById('confirmOk')?.addEventListener('click', handleConfirmOk);
+    document.getElementById('confirmCancel')?.addEventListener('click', handleConfirmCancel);
 }
 
 // ===== SCREENS =====
@@ -489,14 +532,15 @@ function toggleFavorite(id) {
     showToast(favorites.has(id) ? 'Ditambahkan ke favorit' : 'Dihapus dari favorit');
 }
 
-function deletePayload(id) {
+async function deletePayload(id) {
     const payload = userPayloads.find(p => p.id === id);
     if (!payload) {
         showToast('Hanya bisa hapus payload buatan sendiri');
         return;
     }
 
-    if (confirm(`Hapus payload "${payload.title}"?`)) {
+    const confirmed = await customConfirm(`Hapus "${payload.title}"?`);
+    if (confirmed) {
         userPayloads = userPayloads.filter(p => p.id !== id);
         favorites.delete(id);
         saveUserPayloads();
@@ -589,4 +633,181 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Custom confirm dialog (replaces native confirm())
+let confirmResolve = null;
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        confirmResolve = resolve;
+        document.getElementById('confirmMessage').textContent = message;
+        document.getElementById('confirmModal').classList.add('show');
+    });
+}
+
+function handleConfirmOk() {
+    document.getElementById('confirmModal').classList.remove('show');
+    if (confirmResolve) confirmResolve(true);
+    confirmResolve = null;
+}
+
+function handleConfirmCancel() {
+    document.getElementById('confirmModal').classList.remove('show');
+    if (confirmResolve) confirmResolve(false);
+    confirmResolve = null;
+}
+
+// ===== STANDALONE NOTES FUNCTIONS =====
+function showNotesScreen() {
+    showScreen('notes');
+    renderNotesList();
+}
+
+function renderNotesList() {
+    const container = document.getElementById('notesList');
+    const empty = document.getElementById('notesEmptyState');
+
+    if (userNotes.length === 0) {
+        container.innerHTML = '';
+        empty.style.display = 'flex';
+        return;
+    }
+
+    empty.style.display = 'none';
+    container.innerHTML = userNotes.map(note => `
+        <div class="note-card" data-id="${note.id}" data-action="viewNote">
+            <div class="note-card-header">
+                <h4>${escapeHtml(note.title || 'Catatan')}</h4>
+                <span class="note-date">${formatDate(note.updatedAt || note.createdAt)}</span>
+            </div>
+            <p class="note-content-preview">${escapeHtml((note.content || '').substring(0, 100))}${note.content && note.content.length > 100 ? '...' : ''}</p>
+        </div>
+    `).join('');
+
+    // Add event listeners for card click
+    container.querySelectorAll('.note-card').forEach(card => {
+        card.addEventListener('click', function (e) {
+            // Don't trigger if clicking action buttons
+            if (e.target.closest('[data-action="editNote"]') || e.target.closest('[data-action="deleteNote"]')) return;
+            showNoteDetail(this.dataset.id);
+        });
+    });
+}
+
+function showNoteDetail(noteId) {
+    const note = userNotes.find(n => n.id === noteId);
+    if (!note) return;
+
+    currentEditingNote = note;
+
+    document.getElementById('noteDetailTitle').textContent = note.title || 'Catatan';
+    document.getElementById('noteDetailDate').textContent = formatDate(note.updatedAt || note.createdAt);
+    document.getElementById('noteDetailContent').textContent = note.content || '';
+
+    showScreen('noteDetail');
+}
+
+function backToNotesList() {
+    currentEditingNote = null;
+    showScreen('notes');
+    renderNotesList();
+}
+
+function handleNoteAction(e) {
+    const action = e.currentTarget.dataset.action;
+    const id = e.currentTarget.dataset.id;
+
+    if (action === 'editNote') {
+        openNoteEditor(id);
+    } else if (action === 'deleteNote') {
+        deleteNote(id);
+    }
+}
+
+function openNoteEditor(noteId = null) {
+    currentEditingNote = noteId ? userNotes.find(n => n.id === noteId) : null;
+
+    document.getElementById('noteEditorTitle').textContent = currentEditingNote ? 'Edit Catatan' : 'Catatan Baru';
+    document.getElementById('noteTitleInput').value = currentEditingNote?.title || '';
+    document.getElementById('noteContentInput').value = currentEditingNote?.content || '';
+
+    document.getElementById('noteModal').classList.add('show');
+    document.getElementById('noteTitleInput').focus();
+}
+
+function closeNoteEditor() {
+    document.getElementById('noteModal').classList.remove('show');
+    // Only reset currentEditingNote if NOT on detail screen
+    const detailScreen = document.getElementById('noteDetailScreen');
+    if (detailScreen.classList.contains('hidden')) {
+        currentEditingNote = null;
+    }
+}
+
+function saveNote() {
+    const title = document.getElementById('noteTitleInput').value.trim();
+    const content = document.getElementById('noteContentInput').value.trim();
+
+    if (!title && !content) {
+        showToast('Isi catatan');
+        return;
+    }
+
+    let savedNoteId = null;
+
+    if (currentEditingNote) {
+        // Update existing note
+        const idx = userNotes.findIndex(n => n.id === currentEditingNote.id);
+        if (idx !== -1) {
+            userNotes[idx].title = title || 'Catatan';
+            userNotes[idx].content = content;
+            userNotes[idx].updatedAt = Date.now();
+            savedNoteId = currentEditingNote.id;
+        }
+        showToast('Catatan diupdate');
+    } else {
+        // Create new note
+        const newNote = {
+            id: `note_${Date.now()}`,
+            title: title || 'Catatan',
+            content: content,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+        };
+        userNotes.unshift(newNote);
+        savedNoteId = newNote.id;
+        showToast('Catatan disimpan');
+    }
+
+    saveUserNotes();
+    document.getElementById('noteModal').classList.remove('show');
+
+    // Check if we're on detail screen - refresh it
+    const detailScreen = document.getElementById('noteDetailScreen');
+    if (!detailScreen.classList.contains('hidden') && savedNoteId) {
+        showNoteDetail(savedNoteId);
+    } else {
+        currentEditingNote = null;
+        renderNotesList();
+    }
+}
+
+async function deleteNote(noteId) {
+    const note = userNotes.find(n => n.id === noteId);
+    if (!note) return;
+
+    const confirmed = await customConfirm(`Hapus "${note.title}"?`);
+    if (confirmed) {
+        userNotes = userNotes.filter(n => n.id !== noteId);
+        saveUserNotes();
+        renderNotesList();
+        showToast('Catatan dihapus');
+    }
+}
+
+function formatDate(timestamp) {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 }

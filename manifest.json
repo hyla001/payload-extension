@@ -27,5 +27,14 @@
     ],
     "background": {
         "service_worker": "background/updater.js"
+    },
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+L",
+                "mac": "Command+Shift+L"
+            },
+            "description": "Buka PELURU LUHUT"
+        }
     }
 }

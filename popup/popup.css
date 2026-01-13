@@ -50,12 +50,8 @@
 
 html,
 body {
-  min-width: 320px;
-  max-width: 500px;
-  width: 380px;
-  min-height: 400px;
-  max-height: 700px;
-  height: 600px;
+  width: 320px;
+  height: 450px;
   overflow: hidden;
 }
 
@@ -975,4 +971,407 @@ body {
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ===== Note Button ===== */
+.note-btn {
+  padding: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+
+.note-btn:hover {
+  color: var(--accent);
+  background: var(--bg-secondary);
+}
+
+.note-btn.has-note {
+  color: var(--accent);
+}
+
+/* Note Preview in Card */
+.payload-note-preview {
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--accent);
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 0 8px 8px 0;
+  font-size: 10px;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.payload-card.has-note {
+  border-color: var(--accent-dark);
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 200;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 340px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-close-btn {
+  padding: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-body textarea {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: var(--text-primary);
+  resize: none;
+  transition: border-color var(--transition-fast);
+}
+
+.modal-body textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.modal-body textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  gap: 10px;
+}
+
+.modal-save-btn {
+  flex: 1;
+  padding: 12px;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--bg-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.modal-save-btn:hover {
+  opacity: 0.85;
+}
+
+.modal-delete-btn {
+  padding: 12px 16px;
+  background: transparent;
+  border: 1px solid var(--danger);
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--danger);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.modal-delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* ===== Notes Screen ===== */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+}
+
+.note-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  transition: all var(--transition-fast);
+}
+
+.note-card:hover {
+  border-color: var(--accent-dark);
+}
+
+.note-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.note-card-header h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.note-date {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.note-content-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+
+.note-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.note-edit-btn,
+.note-delete-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.note-edit-btn {
+  background: var(--accent);
+  border: none;
+  color: var(--bg-primary);
+}
+
+.note-edit-btn:hover {
+  opacity: 0.85;
+}
+
+.note-delete-btn {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.note-delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Note Title Input */
+.note-title-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.note-title-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.note-title-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Notes button accent style */
+.icon-btn.accent {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+.icon-btn.accent:hover {
+  opacity: 0.85;
+}
+
+/* Note Detail Screen */
+.note-detail-content {
+  padding: 16px;
+}
+
+.note-full-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 200px;
+}
+
+/* Note card clickable */
+.note-card {
+  cursor: pointer;
+}
+
+/* Danger button style */
+.icon-btn.danger {
+  color: var(--danger);
+}
+
+.icon-btn.danger:hover {
+  background: rgba(255, 82, 82, 0.1);
+}
+
+/* ===== Custom Confirm Modal ===== */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 300;
+}
+
+.confirm-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  width: 85%;
+  max-width: 280px;
+  text-align: center;
+}
+
+.confirm-box p {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-cancel,
+.confirm-ok {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.confirm-cancel {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.confirm-cancel:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.confirm-ok {
+  background: var(--danger);
+  border: none;
+  color: white;
+}
+
+.confirm-ok:hover {
+  opacity: 0.85;
 }
